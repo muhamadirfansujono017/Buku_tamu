@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\guests;
+use App\Models\Guest;
 use Illuminate\Http\Request;
+use Ramsey\Uuid\Guid\Guid;
 
-class guestsController extends Controller
+class GuestsController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $guests = guests::paginate(5);
+        $guests = Guest::paginate(5);
         return view('page.guests.index')->with([
             'guests' => $guests
         ]);
@@ -23,7 +24,7 @@ class guestsController extends Controller
      */
     public function create()
     {
-        //
+        return view('guests.create');   
     }
 
     /**
@@ -31,55 +32,63 @@ class guestsController extends Controller
      */
     public function store(Request $request)
     {
-        $data = [
-            'nama' => $request->input('nama'),
-            'alamat' => $request->input('alamat'),
+
+        $data=[
+            'nama' => $request->nama,
+            'email' => $request->email,
+            'message' =>$request->message,
+            'visit_date' =>$request->visit_date,
+            'is_approved' =>0,
+           
         ];
 
-        guests::create($data);
+        Guest::create($data);
 
-        return back()->with('message_delete', 'Data guests Sudah dihapus');
+        return back()->with('message_delete', 'Data Guests Sudah dihapus');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($id)
     {
-        //
+        $guest = Guest::findOrFail($id);
+        return view('guests.show', compact('guest'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
-        //
+        $guest = Guest::findOrFail($id);
+        return view('guests.edit', compact('guest'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
         $data = [
             'nama' => $request->input('nama'),
-            'alamat' => $request->input('alamat'),
+            'email' => $request->input('email'),
         ];
 
-        $datas = guests::findOrFail($id);
+
+        $datas = Guest::findOrFail($id);
         $datas->update($data);
-        return back()->with('message_delete', 'Data guests Sudah dihapus');
+        return back()->with('message_delete', 'Data Outlet Sudah dihapus');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
         try {
-            $data = guests::findOrFail($id);
-            $data = guests::where('id', $id)->first();
+            $data = Guest::findOrFail($id);
+            $data = Guest::where('id', $id)->first();
 
             $data->delete();
 

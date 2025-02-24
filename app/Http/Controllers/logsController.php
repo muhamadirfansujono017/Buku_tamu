@@ -2,63 +2,55 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Logs;
 use Illuminate\Http\Request;
 
-class logsController extends Controller
+class LogsController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Menampilkan daftar log aktivitas.
      */
     public function index()
     {
-        //
+        $Logs = Logs::all();
+        return view('logs.index', compact('logs'));
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
+     * Menyimpan log aktivitas baru.
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'guest_id' => 'required|exists:guests,id',
+            'activity' => 'required|string|max:255',
+        ]);
+
+        $log = new Logs();
+        $log->guest_id = $request->guest_id;
+        $log->activity = $request->activity;
+        $log->save();
+
+        return response()->json(['message' => 'Log aktivitas berhasil disimpan.']);
     }
 
     /**
-     * Display the specified resource.
+     * Menampilkan detail log tertentu.
      */
     public function show(string $id)
     {
-        //
+        $log = Logs::findOrFail($id);
+        return view('logs.show', compact('log'));
     }
 
     /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
+     * Menghapus log tertentu.
      */
     public function destroy(string $id)
     {
-        //
+        $log = Logs::findOrFail($id);
+        $log->delete();
+
+        return redirect()->back()->with('success', 'Log berhasil dihapus.');
     }
 }

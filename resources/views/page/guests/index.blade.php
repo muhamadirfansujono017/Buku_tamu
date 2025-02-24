@@ -9,7 +9,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-4 items-ce">
-                    <div>DATA guests</div>
+                    <div>DATA GUESTS</div>
                 </div>
                 <div class="p-6 text-gray-900 dark:text-gray-100 flex gap-5">
                     {{-- FORM ADD --}}
@@ -28,10 +28,24 @@
                             </div>
                             <div class="mb-5">
                                 <label for="base-input"
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Alamat</label>
-                                <input name="alamat" type="text" id="base-input"
+                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
+                                <input name="email" type="text" id="base-input"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                    placeholder="Masukan Alamat disini...">
+                                    placeholder="Masukan Email disini...">
+                            </div>
+                            <div class="mb-5">
+                                <label for="base-input"
+                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Visit Date</label>
+                                <input name="visit_date" type="date" id="base-input"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    placeholder="Masukan visit date disini...">
+                            </div>
+                            <div class="mb-5">
+                                <label for="base-input"
+                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">message</label>
+                                <input name="message" type="text" id="base-input"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    placeholder="Masukan is approved disini...">
                             </div>
                             <button type="submit"
                                 class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">SIMPAN</button>
@@ -51,8 +65,9 @@
                                             NAMA
                                         </th>
                                         <th scope="col" class="px-6 py-3">
-                                            ALAMAT
+                                            EMAIL
                                         </th>
+
                                         <th scope="col" class="px-6 py-3">
 
                                         </th>
@@ -67,19 +82,19 @@
                                             class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                             <th scope="row"
                                                 class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                                {{ $guest->perPage() * ($guest->currentPage() - 1) + $key + 1 }}
+                                                {{ $guests->perPage() * ($guests->currentPage() - 1) + $key + 1 }}
                                             </th>
                                             <td class="px-6 py-4">
                                                 {{ $k->nama }}
                                             </td>
                                             <td class="px-6 py-4">
-                                                {{ $k->alamat }}
+                                                {{ $k->email }}
                                             </td>
                                             <td class="px-6 py-4">
                                                 <button type="button" data-id="{{ $k->id }}"
                                                     data-modal-target="sourceModal"
                                                     data-nama="{{ $k->nama }}"
-                                                    data-alamat="{{ $k->alamat }}"onclick="editSourceModal(this)"
+                                                    data-email="{{ $k->email }}"onclick="editSourceModal(this)"
                                                     class="bg-amber-500 hover:bg-amber-600 px-3 py-1 rounded-md text-xs text-white">
                                                     Edit
                                                 </button>
@@ -93,7 +108,7 @@
                             </table>
                         </div>
                         <div class="mt-4">
-                            {{ $guests->Links() }}
+                            {{ $guests->links() }}
                         </div>
                     </div>
                 </div>
@@ -124,10 +139,10 @@
                                 placeholder="Masukan Nama disini...">
                         </div>
                         <div class="">
-                            <label for="text" class="block mb-2 text-sm font-medium text-gray-900">Alamat</label>
-                            <input type="text" id="alamat" name="alamat"
+                            <label for="text" class="block mb-2 text-sm font-medium text-gray-900">Email</label>
+                            <input type="text" id="email" name="email"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                placeholder="Masukan Alamat disini...">
+                                placeholder="Masukan Email disini...">
                         </div>
                     </div>
                     <div class="flex items-center p-4 space-x-2 border-t border-gray-200 rounded-b">
@@ -147,15 +162,15 @@
         const modalTarget = button.dataset.modalTarget;
         const id = button.dataset.id;
         const nama = button.dataset.nama;
-        const alamat = button.dataset.alamat;
+        const email = button.dataset.email;
         const jenis_kelamin = button.dataset.jenis_kelamin;
         let url = "{{ route('guests.update', ':id') }}".replace(':id', id);
 
         let status = document.getElementById(modalTarget);
-        document.getElementById('title_source').innerText = `UPDATE GUESTS ${nama}`;
+        document.getElementById('title_source').innerText = `UPDATE OUTLET ${nama}`;
 
         document.getElementById('nama').value = nama;
-        document.getElementById('alamat').value = alamat;
+        document.getElementById('email').value = email;
             
         document.getElementById('formSourceButton').innerText = 'Simpan';
         document.getElementById('formSourceModal').setAttribute('action', url);
@@ -179,7 +194,7 @@
         status.classList.toggle('hidden');
     }
 
-    const guestDelete = async (id, nama) => {
+    const guestsDelete = async (id, nama) => {
         let tanya = confirm(`Apakah anda yakin untuk menghapus GUESTS ${nama} ?`);
         if (tanya) {
             await axios.post(`/guests/${id}`, {

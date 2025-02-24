@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('guests', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
+            $table->string('nama');
+            $table->string('email');
             $table->text('message');
             $table->timestamp('visit_date')->useCurrent();
             $table->boolean('is_approved')->default(false);
@@ -25,8 +25,9 @@ return new class extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down(): void
-    {
-        Schema::dropIfExists('guests');
-    }
+    public function down()
+{
+    Schema::dropIfExists('outlet');
+}
+
 };
