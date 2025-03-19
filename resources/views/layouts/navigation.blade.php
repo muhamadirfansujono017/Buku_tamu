@@ -36,12 +36,11 @@
                                     {{ __('Guests') }}
                                 </x-dropdown-link>
 
-                                <x-dropdown-link :href="route('messages.index')">
+                                <x-dropdown-link :href="route('message.index')">
                                     {{ __('Messages') }}
                                 </x-dropdown-link>
-
-                                <x-dropdown-link :href="route('replies.index')">
-                                    {{ __('Replies') }}
+                                <x-dropdown-link :href="route('reply.index')">
+                                    {{ __('Reply') }}
                                 </x-dropdown-link>
                             </x-slot>
                         </x-dropdown>

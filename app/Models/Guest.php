@@ -17,19 +17,10 @@ class Guest extends Model
     protected $fillable = [
         'nama',
         'email',
-        'message',
-        'visit_date',
-        'is_approved',
     ];
 
     public function messages()
     {
         return $this->hasMany(Message::class, 'guest_id');
-    }
-
-   
-    public function replies()
-    {
-        return $this->hasMany(Reply::class, 'guest_id');
     }
 }

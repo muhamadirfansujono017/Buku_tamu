@@ -15,9 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('nama');
             $table->string('email');
-            $table->text('message');
-            $table->timestamp('visit_date')->useCurrent();
-            $table->boolean('is_approved')->default(false);
             $table->timestamps();
         });
     }
@@ -27,7 +24,7 @@ return new class extends Migration
      */
     public function down()
 {
-    Schema::dropIfExists('outlet');
+    Schema::dropIfExists('guests');
 }
 
 };

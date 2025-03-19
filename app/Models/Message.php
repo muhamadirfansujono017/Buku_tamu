@@ -10,13 +10,9 @@ class Message extends Model
     use HasFactory;
 
     
-    protected $table = 'messages'; 
-
-
     protected $fillable = [
         'guest_id',
         'message',
-        'jenis_kelamin'
     ];
 
     public function guest()

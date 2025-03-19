@@ -1,10 +1,13 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ErrorController;
 use App\Http\Controllers\GuestsController;
 use App\Http\Controllers\LogsController;
-use App\Http\Controllers\MessagesController;
+use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RepliesController;
+use App\Http\Controllers\ReplyController;
 use App\Http\Controllers\SettingsController;
 use Illuminate\Support\Facades\Route;
 
@@ -17,10 +20,12 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::resource('error',ErrorController::class);
+
 
 Route::resource('guests', GuestsController::class)->middleware('auth');
-Route::resource('messages', MessagesController::class)->middleware('auth');
-Route::resource('replies', RepliesController::class)->middleware('auth');
+Route::resource('message', MessageController::class)->middleware('auth');
+Route::resource('reply', ReplyController::class)->middleware('auth');
 Route::resource('logs', LogsController::class)->middleware('auth');
 Route::resource('settings', SettingsController::class)->middleware('auth');
 

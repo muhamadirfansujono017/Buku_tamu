@@ -4,18 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Models\Guest;
 use Illuminate\Http\Request;
-use Ramsey\Uuid\Guid\Guid;
+use App\Models\Message;
 
-class GuestsController extends Controller
+class messageController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $guests = Guest::paginate(5);
-        return view('page.guests.index')->with([
-            'guests' => $guests
+        $messages = Message::paginate(5);
+        $guests = Guest::all();
+        return view('page.messages.index')->with([
+            'message' => $messages,
+            'guests'  => $guests
         ]);
     }
 
@@ -24,7 +26,7 @@ class GuestsController extends Controller
      */
     public function create()
     {
-        return view('guests.create');   
+       // 
     }
 
     /**
@@ -32,60 +34,58 @@ class GuestsController extends Controller
      */
     public function store(Request $request)
     {
-
-        $data=[
-            'nama' => $request->nama,
-            'email' => $request->email,
-           
+        
+        $data = [
+            'guest_id' => $request->input('guest_id'),
+            'message' => $request->input('message'),
         ];
 
-        Guest::create($data);
-
-        return back()->with('message_delete', 'Data Guests Sudah dihapus');
+        Message::create($data);
+        return back()->with('message_delete', 'Data Message Sudah dihapus');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show($id)
+    public function show(string $id)
     {
-        $guest = Guest::findOrFail($id);
-        return view('guests.show', compact('guest'));
+       //
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($id)
+    public function edit(string $id)
     {
-        $guest = Guest::findOrFail($id);
-        return view('guests.edit', compact('guest'));
+      //
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, string $id)
     {
+
+        
         $data = [
-            'nama' => $request->input('nama'),
-            'email' => $request->input('email'),
+            'guest_id' => $request->input('guest_id_edit'),
+            'message' => $request->input('message'),
         ];
 
-
-        $datas = Guest::findOrFail($id);
+        $datas = Message::findOrFail($id);
         $datas->update($data);
-        return back()->with('message_delete', 'Data Outlet Sudah dihapus');
+        return back()->with('message_delete', 'Data Paket Sudah dihapus');
+    
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy(string $id)
     {
         try {
-            $data = Guest::findOrFail($id);
-            $data = Guest::where('id', $id)->first();
+            $data = Message::findOrFail($id);
+            $data = Message::where('id', $id)->first();
 
             $data->delete();
 
@@ -98,5 +98,6 @@ class GuestsController extends Controller
                 'message' => $e->getMessage()
             ], 500);
         }
+        
     }
 }

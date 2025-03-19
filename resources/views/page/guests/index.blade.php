@@ -33,20 +33,6 @@
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     placeholder="Masukan Email disini...">
                             </div>
-                            <div class="mb-5">
-                                <label for="base-input"
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Visit Date</label>
-                                <input name="visit_date" type="date" id="base-input"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                    placeholder="Masukan visit date disini...">
-                            </div>
-                            <div class="mb-5">
-                                <label for="base-input"
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">message</label>
-                                <input name="message" type="text" id="base-input"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                    placeholder="Masukan is approved disini...">
-                            </div>
                             <button type="submit"
                                 class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">SIMPAN</button>
                         </form>
@@ -69,7 +55,10 @@
                                         </th>
 
                                         <th scope="col" class="px-6 py-3">
-
+                                            Visit Date
+                                        </th>
+                                        <th scope="col" class="px-6 py-3">
+                                            message
                                         </th>
                                     </tr>
                                 </thead>
@@ -163,11 +152,10 @@
         const id = button.dataset.id;
         const nama = button.dataset.nama;
         const email = button.dataset.email;
-        const jenis_kelamin = button.dataset.jenis_kelamin;
         let url = "{{ route('guests.update', ':id') }}".replace(':id', id);
 
         let status = document.getElementById(modalTarget);
-        document.getElementById('title_source').innerText = `UPDATE OUTLET ${nama}`;
+        document.getElementById('title_source').innerText = `UPDATE GUESTS ${nama}`;
 
         document.getElementById('nama').value = nama;
         document.getElementById('email').value = email;
