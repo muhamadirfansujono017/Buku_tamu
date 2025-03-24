@@ -15,6 +15,6 @@
         </div>
     </div>
 
-    <a href="{{ route('messages.index') }}" class="btn btn-secondary mt-3">Kembali</a>
+    <a href="{{ route('message.index') }}" class="btn btn-secondary mt-3">Kembali</a>
 </div>
 @endsection

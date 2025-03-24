@@ -193,33 +193,33 @@
         let url = "{{ route('reply.update', ':id') }}".replace(':id', id);
         let status = document.getElementById(modalTarget);
 
-        // Set judul modal
+   
         document.getElementById('title_source').innerText = `UPDATE REPLY ${nama_guest}`;
 
-        // Isi nilai input di modal
+       
         document.getElementById('nama_guest').value = nama_guest;
         document.getElementById('email').value = email;
         document.getElementById('message').value = message;
         document.getElementById('tanggal').value = tanggal;
 
-        // Set action form dan tambahkan method PATCH
+       
         document.getElementById('formSourceButton').innerText = 'Simpan';
         document.getElementById('formSourceModal').setAttribute('action', url);
 
-        // Tambahkan CSRF token
+       
         let csrfToken = document.createElement('input');
         csrfToken.setAttribute('type', 'hidden');
         csrfToken.setAttribute('value', '{{ csrf_token() }}');
         formModal.appendChild(csrfToken);
 
-        // Tambahkan method PATCH
+       
         let methodInput = document.createElement('input');
         methodInput.setAttribute('type', 'hidden');
         methodInput.setAttribute('name', '_method');
         methodInput.setAttribute('value', 'PATCH');
         formModal.appendChild(methodInput);
 
-        // Tampilkan modal
+        
         status.classList.toggle('hidden');
     }
 

@@ -4,7 +4,7 @@
 <div class="container">
     <h1>Edit Pesan</h1>
 
-    <form action="{{ route('messages.update', $message) }}" method="POST">
+    <form action="{{ route('message.update', $message) }}" method="POST">
         @csrf
         @method('PUT')
 
@@ -35,7 +35,7 @@
         </div>
 
         <button type="submit" class="btn btn-warning">Update Pesan</button>
-        <a href="{{ route('messages.index') }}" class="btn btn-secondary">Batal</a>
+        <a href="{{ route('message.index') }}" class="btn btn-secondary">Batal</a>
     </form>
 </div>
 @endsection

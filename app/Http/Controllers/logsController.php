@@ -5,14 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Logs;
 use Illuminate\Http\Request;
 
-class LogsController extends Controller
+class logsController extends Controller
 {
     /**
      * Menampilkan daftar log aktivitas.
      */
     public function index()
     {
-        $Logs = Logs::all();
+        $log = logs::all();
         return view('logs.index', compact('logs'));
     }
 

@@ -4,7 +4,7 @@
 <div class="container">
     <h1>Buat Pesan Baru</h1>
 
-    <form action="{{ route('messages.store') }}" method="POST">
+    <form action="{{ route('message.store') }}" method="POST">
         @csrf
 
         <div class="mb-3">
@@ -33,7 +33,7 @@
         </div>
 
         <button type="submit" class="btn btn-success">Simpan Pesan</button>
-        <a href="{{ route('messages.index') }}" class="btn btn-secondary">Batal</a>
+        <a href="{{ route('message.index') }}" class="btn btn-secondary">Batal</a>
     </form>
 </div>
 @endsection

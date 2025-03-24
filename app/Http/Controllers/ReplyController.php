@@ -96,7 +96,7 @@ class ReplyController extends Controller
 
             return redirect()
                 ->route('reply.index')
-                ->with('message_insert', 'Data Album Sudah ditambahkan');
+                ->with('message_insert', 'Data reply Sudah ditambahkan');
         } catch (\Exception $e) {
             echo "<script>console.error('PHP Error: " .
                 addslashes($e->getMessage()) . "');</script>";

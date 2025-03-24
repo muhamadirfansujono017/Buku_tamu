@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Guest;
 use Illuminate\Http\Request;
-use Ramsey\Uuid\Guid\Guid;
 
 class GuestsController extends Controller
 {
@@ -13,10 +12,17 @@ class GuestsController extends Controller
      */
     public function index()
     {
-        $guests = Guest::paginate(5);
-        return view('page.guests.index')->with([
-            'guests' => $guests
-        ]);
+        try {
+            $guest = Guest::paginate(5);
+            return view('page.guests.index')->with([
+                'guests' => $guest,
+            ]);
+        } catch (\Exception $e) {
+            echo "<script>console.error('PHP Error: " .
+                addslashes($e->getMessage()) . "');</script>";
+            return view('error.index');
+        }
+        
     }
 
     /**
@@ -32,7 +38,7 @@ class GuestsController extends Controller
      */
     public function store(Request $request)
     {
-
+        // try {
         $data=[
             'nama' => $request->nama,
             'email' => $request->email,
@@ -40,8 +46,16 @@ class GuestsController extends Controller
         ];
 
         Guest::create($data);
+       // return back()->with('message_delete', 'Data Guests Sudah dihapus');
 
-        return back()->with('message_delete', 'Data Guests Sudah dihapus');
+        //     return redirect()
+        //         ->route('guest.index')
+        //         ->with('message_insert', 'Data guest Sudah ditambahkan');
+        // } catch (\Exception $e) {
+        //     echo "<script>console.error('PHP Error: " .
+        //     addslashes($e->getMessage()) . "');</script>";
+        //     return view('error.index');
+        // }
     }
 
     /**
@@ -67,6 +81,7 @@ class GuestsController extends Controller
      */
     public function update(Request $request, $id)
     {
+        try {
         $data = [
             'nama' => $request->input('nama'),
             'email' => $request->input('email'),
@@ -75,7 +90,16 @@ class GuestsController extends Controller
 
         $datas = Guest::findOrFail($id);
         $datas->update($data);
-        return back()->with('message_delete', 'Data Outlet Sudah dihapus');
+        //return back()->with('message_delete', 'Data Outlet Sudah dihapus');
+
+                return redirect()
+                ->route('guest.index')
+                ->with('message_insert', 'Data guest Sudah ditambahkan');
+        } catch (\Exception $e) {
+            echo "<script>console.error('PHP Error: " .
+                addslashes($e->getMessage()) . "');</script>";
+            return view('error.index');
+        }
     }
 
     /**
@@ -89,14 +113,11 @@ class GuestsController extends Controller
 
             $data->delete();
 
-            return response()->json([
-                'message_delete' => "Data Deleted!"
-            ]);
+            return back()->with('message_delete', 'Data Peserta Sudah dihapus');
         } catch (\Exception $e) {
-            return response()->json([
-                'error' => 'Failed to delete data.',
-                'message' => $e->getMessage()
-            ], 500);
+            echo "<script>console.error('PHP Error: " .
+                addslashes($e->getMessage()) . "');</script>";
+            return view('error.index');
         }
     }
 }

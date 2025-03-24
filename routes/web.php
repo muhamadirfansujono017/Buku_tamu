@@ -3,12 +3,11 @@
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ErrorController;
 use App\Http\Controllers\GuestsController;
+use App\Http\Controllers\laporantamuController;
 use App\Http\Controllers\LogsController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\RepliesController;
 use App\Http\Controllers\ReplyController;
-use App\Http\Controllers\SettingsController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -27,8 +26,7 @@ Route::resource('guests', GuestsController::class)->middleware('auth');
 Route::resource('message', MessageController::class)->middleware('auth');
 Route::resource('reply', ReplyController::class)->middleware('auth');
 Route::resource('logs', LogsController::class)->middleware('auth');
-Route::resource('settings', SettingsController::class)->middleware('auth');
-
+Route::resource('laporantamu', laporantamuController::class)->middleware('auth');
 
 Route::get('/profile', [ProfileController::class, 'edit'])->middleware('auth')->name('profile.edit');
 Route::patch('/profile', [ProfileController::class, 'update'])->middleware('auth')->name('profile.update');

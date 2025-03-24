@@ -13,12 +13,19 @@ class messageController extends Controller
      */
     public function index()
     {
-        $messages = Message::paginate(5);
-        $guests = Guest::all();
-        return view('page.messages.index')->with([
-            'message' => $messages,
-            'guests'  => $guests
-        ]);
+        try{
+
+            $messages = Message::paginate(5);
+            $guests = Guest::all();
+            return view('page.messages.index')->with([
+                'message' => $messages,
+                'guests'  => $guests
+            ]);
+        } catch (\Exception $e) {
+            echo "<script>console.error('PHP Error: " .
+                addslashes($e->getMessage()) . "');</script>";
+            return view('error.index');
+        }
     }
 
     /**
@@ -34,14 +41,23 @@ class messageController extends Controller
      */
     public function store(Request $request)
     {
-        
-        $data = [
-            'guest_id' => $request->input('guest_id'),
-            'message' => $request->input('message'),
-        ];
+        try{
+            $data = [
+                'guest_id' => $request->input('guest_id'),
+                'message' => $request->input('message'),
+            ];
 
-        Message::create($data);
-        return back()->with('message_delete', 'Data Message Sudah dihapus');
+            Message::create($data);
+            //return back()->with('message_delete', 'Data Message Sudah dihapus');
+
+                return redirect()
+                ->route('message.index')
+                ->with('message_insert', 'Data message Sudah ditambahkan');
+        } catch (\Exception $e) {
+            echo "<script>console.error('PHP Error: " .
+                addslashes($e->getMessage()) . "');</script>";
+            return view('error.index');
+        }
     }
 
     /**
@@ -66,7 +82,7 @@ class messageController extends Controller
     public function update(Request $request, string $id)
     {
 
-        
+        try{
         $data = [
             'guest_id' => $request->input('guest_id_edit'),
             'message' => $request->input('message'),
@@ -74,7 +90,16 @@ class messageController extends Controller
 
         $datas = Message::findOrFail($id);
         $datas->update($data);
-        return back()->with('message_delete', 'Data Paket Sudah dihapus');
+        //return back()->with('message_delete', 'Data Paket Sudah dihapus');
+
+                return redirect()
+                ->route('message.index')
+                ->with('message_insert', 'Data message Sudah ditambahkan');
+        } catch (\Exception $e) {
+            echo "<script>console.error('PHP Error: " .
+                addslashes($e->getMessage()) . "');</script>";
+            return view('error.index');
+        }
     
     }
 
@@ -89,14 +114,11 @@ class messageController extends Controller
 
             $data->delete();
 
-            return response()->json([
-                'message_delete' => "Data Deleted!"
-            ]);
+            return back()->with('message_delete', 'Data Customer Sudah dihapus');
         } catch (\Exception $e) {
-            return response()->json([
-                'error' => 'Failed to delete data.',
-                'message' => $e->getMessage()
-            ], 500);
+            echo "<script>console.error('PHP Error: " .
+                addslashes($e->getMessage()) . "');</script>";
+            return view('error.index');
         }
         
     }
