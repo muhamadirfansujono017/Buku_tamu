@@ -3,29 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\Models\Guest;
-use Illuminate\Http\Request;
 use App\Models\Message;
+use Illuminate\Http\Request;
 
-class messageController extends Controller
+class MessageController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        try{
+        $messages = Message::with('guest')->paginate(5);  // Memuat data tamu
+        $guests = Guest::all();  // Ambil semua data tamu
 
-            $messages = Message::paginate(5);
-            $guests = Guest::all();
-            return view('page.messages.index')->with([
-                'message' => $messages,
-                'guests'  => $guests
-            ]);
-        } catch (\Exception $e) {
-            echo "<script>console.error('PHP Error: " .
-                addslashes($e->getMessage()) . "');</script>";
-            return view('error.index');
-        }
+        return view('page.messages.index', [
+            'messages' => $messages,
+            'guests' => $guests
+        ]);
     }
 
     /**
@@ -33,7 +27,8 @@ class messageController extends Controller
      */
     public function create()
     {
-       // 
+        // Tidak ada form create, hanya mengarah ke index.
+        return redirect()->route('message.index');
     }
 
     /**
@@ -41,23 +36,28 @@ class messageController extends Controller
      */
     public function store(Request $request)
     {
-        try{
-            $data = [
-                'guest_id' => $request->input('guest_id'),
-                'message' => $request->input('message'),
-            ];
+        // Validasi inputan user
+        $request->validate([
+            'guest_id' => 'required|exists:guests,id',  // Guest id yang valid
+            'pesan' => 'required|string|max:1000',  // Pesan tidak boleh kosong
+            'tanggal' => 'required|date',  // Tanggal harus ada
+        ]);
 
-            Message::create($data);
-            //return back()->with('message_delete', 'Data Message Sudah dihapus');
+        // Simpan data pesan baru
+        Message::create([
+            'guest_id' => $request->guest_id,  // Menyimpan id guest
+            'email' => $request->email,
+            'telepon' => $request->telepon,
+            'alamat' => $request->alamat,
+            'tujuan' => $request->tujuan,
+            'pesan' => $request->pesan,
+            'tanggal' => $request->tanggal,
+        ]);
 
-                return redirect()
-                ->route('message.index')
-                ->with('message_insert', 'Data message Sudah ditambahkan');
-        } catch (\Exception $e) {
-            echo "<script>console.error('PHP Error: " .
-                addslashes($e->getMessage()) . "');</script>";
-            return view('error.index');
-        }
+        // Redirect kembali ke halaman index
+        return redirect()
+            ->route('message.index')
+            ->with('message_insert', 'Data pesan berhasil ditambahkan.');
     }
 
     /**
@@ -65,7 +65,8 @@ class messageController extends Controller
      */
     public function show(string $id)
     {
-       //
+        // Tidak digunakan, redirect ke index.
+        return redirect()->route('message.index');
     }
 
     /**
@@ -73,7 +74,8 @@ class messageController extends Controller
      */
     public function edit(string $id)
     {
-      //
+        // Tidak ada form edit, redirect ke index.
+        return redirect()->route('message.index');
     }
 
     /**
@@ -81,26 +83,29 @@ class messageController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        // Validasi inputan untuk update
+        $request->validate([
+            'guest_id_edit' => 'required|exists:guests,id',  // Guest id yang valid
+            'pesan' => 'required|string|max:1000',  // Pesan tidak boleh kosong
+            'tanggal' => 'required|date',  // Tanggal harus ada
+        ]);
 
-        try{
-        $data = [
-            'guest_id' => $request->input('guest_id_edit'),
-            'message' => $request->input('message'),
-        ];
+        // Cari pesan yang akan diupdate
+        $message = Message::findOrFail($id);
+        $message->update([
+            'guest_id' => $request->guest_id_edit,  // Update id tamu
+            'email' => $request->email,
+            'telepon' => $request->telepon,
+            'alamat' => $request->alamat,
+            'tujuan' => $request->tujuan,
+            'pesan' => $request->pesan,
+            'tanggal' => $request->tanggal,
+        ]);
 
-        $datas = Message::findOrFail($id);
-        $datas->update($data);
-        //return back()->with('message_delete', 'Data Paket Sudah dihapus');
-
-                return redirect()
-                ->route('message.index')
-                ->with('message_insert', 'Data message Sudah ditambahkan');
-        } catch (\Exception $e) {
-            echo "<script>console.error('PHP Error: " .
-                addslashes($e->getMessage()) . "');</script>";
-            return view('error.index');
-        }
-    
+        // Redirect ke halaman index dengan pesan sukses
+        return redirect()
+            ->route('message.index')
+            ->with('message_update', 'Data pesan berhasil diperbarui.');
     }
 
     /**
@@ -108,18 +113,11 @@ class messageController extends Controller
      */
     public function destroy(string $id)
     {
-        try {
-            $data = Message::findOrFail($id);
-            $data = Message::where('id', $id)->first();
+        // Cari pesan yang akan dihapus
+        $message = Message::findOrFail($id);
+        $message->delete();  // Hapus pesan
 
-            $data->delete();
-
-            return back()->with('message_delete', 'Data Customer Sudah dihapus');
-        } catch (\Exception $e) {
-            echo "<script>console.error('PHP Error: " .
-                addslashes($e->getMessage()) . "');</script>";
-            return view('error.index');
-        }
-        
+        // Redirect kembali ke halaman sebelumnya dengan pesan sukses
+        return back()->with('message_delete', 'Data pesan berhasil dihapus.');
     }
 }

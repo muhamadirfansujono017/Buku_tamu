@@ -2,129 +2,99 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Guest;
 use App\Models\Message;
-use App\Models\Reply;
 use Illuminate\Http\Request;
 
 class LaporanTamuController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
     /**
-     * Menampilkan daftar balasan
+     * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $replies = Reply::with(['guest', 'message', 'parent'])
-            ->orderBy('tanggal', 'desc')
-            ->paginate(10);
+        // Query untuk mengambil data pesan
+        $message = Message::query();
 
-        return view('replies.index', compact('replies'));
+        // Filter berdasarkan tanggal jika ada
+        if ($request->has('start_date') && $request->has('end_date')) {
+            $message = $message->whereBetween('tanggal', [
+                $request->start_date,
+                $request->end_date
+            ]);
+        }
+
+        // Ambil data pesan dengan get
+        $message = $message->get();
+
+        // Hitung jumlah pesan
+        $messageCount = $message->count();
+
+        // Kembalikan view dengan data pesan dan jumlah pesan
+        return view('laporan.index', compact('message', 'messageCount'));
     }
 
     /**
-     * Menampilkan form tambah balasan
+     * Show the form for creating a new resource.
      */
     public function create()
     {
-        $guests = Guest::pluck('nama', 'id');
-        $messages = Message::pluck('judul', 'id');
-        $parentReplies = Reply::whereNull('Reply_id')->get();
-
-        return view('replies.create', compact('guests', 'messages', 'parentReplies'));
+        // Method ini tidak digunakan, jika Anda ingin membuat form, tambahkan di sini.
     }
 
     /**
-     * Menyimpan data balasan baru
+     * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'guest_id' => 'required|exists:guests,id',
-            'message_id' => 'required|exists:messages,id',
-            'email' => 'required|email',
-            'tanggal' => 'required|date',
-            'Reply_id' => 'nullable|exists:replies,id',
-            'isi_balasan' => 'required|string',
-        ]);
+        // Mengambil tanggal mulai dan tanggal sampai dari request
+        $dari = $request->input('dari', 'all');
+        $sampai = $request->input('sampai', 'all');
 
-        Reply::create([
-            'guest_id' => $request->guest_id,
-            'message_id' => $request->message_id,
-            'Reply_id' => $request->Reply_id,
-            'email' => $request->email,
-            'tanggal' => $request->tanggal,
-            'isi_balasan' => $request->isi_balasan,
-        ]);
+        // Jika 'all', set nilai null
+        if ($dari === 'all') $dari = null;
+        if ($sampai === 'all') $sampai = null;
 
-        return redirect()
-            ->route('replies.index')
-            ->with('success', 'Balasan berhasil disimpan');
+        // Jika tidak ada filter tanggal, ambil semua data pesan
+        if ($dari === null) {
+            $data = Message::all();
+        } else {
+            // Jika ada filter tanggal, ambil pesan berdasarkan rentang tanggal
+            $data = Message::whereBetween('tanggal', [$dari, $sampai])->get();
+        }
+
+        // Kembalikan view print dengan data pesan
+        return view('laporan.print', ['data' => $data]);
     }
 
     /**
-     * Menampilkan detail balasan
+     * Display the specified resource.
      */
-    public function show($id)
+    public function show(string $id)
     {
-        $reply = Reply::with(['guest', 'message', 'parent', 'children'])
-            ->findOrFail($id);
-
-        return view('replies.show', compact('reply'));
+        // Method ini bisa digunakan jika Anda ingin menampilkan detail dari pesan tertentu.
     }
 
     /**
-     * Menampilkan form edit balasan
+     * Show the form for editing the specified resource.
      */
-    public function edit($id)
+    public function edit(string $id)
     {
-        $reply = Reply::findOrFail($id);
-        $guests = Guest::pluck('nama', 'id');
-        $messages = Message::pluck('judul', 'id');
-        $parentReplies = Reply::where('id', '!=', $id)
-            ->where(function ($q) use ($id) {
-                $q->whereNull('Reply_id')
-                  ->orWhere('id', '!=', $id);
-            })
-            ->get();
-
-        return view('replies.edit', compact('reply', 'guests', 'messages', 'parentReplies'));
+        // Method ini bisa digunakan untuk form edit data, jika perlu.
     }
 
     /**
-     * Update data balasan
+     * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, string $id)
     {
-        $request->validate([
-            'guest_id' => 'required|exists:guests,id',
-            'message_id' => 'required|exists:messages,id',
-            'email' => 'required|email',
-            'tanggal' => 'required|date',
-            'Reply_id' => 'nullable|exists:replies,id',
-            'isi_balasan' => 'required|string',
-        ]);
-
-        $reply = Reply::findOrFail($id);
-        $reply->update($request->all());
-
-        return redirect()
-            ->route('replies.index')
-            ->with('success', 'Balasan berhasil diupdate');
+        // Method ini bisa digunakan untuk update data pesan jika diperlukan.
     }
 
     /**
-     * Hapus data balasan
+     * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy(string $id)
     {
-        $reply = Reply::findOrFail($id);
-        $reply->delete();
-
-        return back()->with('success', 'Balasan berhasil dihapus');
+        // Method ini bisa digunakan untuk menghapus data pesan jika diperlukan.
     }
 }

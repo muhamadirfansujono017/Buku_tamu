@@ -15,6 +15,11 @@ return new class extends Migration
             $table->id();
             $table->string('nama');
             $table->string('email');
+            $table->string('telepon');
+            $table->string('alamat');
+            $table->string('tujuan');
+            $table->string('pesan');
+            $table->string('tanggal');
             $table->timestamps();
         });
     }

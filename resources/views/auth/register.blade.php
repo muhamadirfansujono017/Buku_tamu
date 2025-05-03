@@ -1,7 +1,6 @@
 <x-guest-layout>
-    <div class="flex flex-col items-center justify-center min-h-screen bg-gray-100">
 
-        <form method="POST" action="{{ route('register') }}" class="bg-white p-6 rounded-lg shadow-md w-96">
+        <form method="POST" action="{{ route('register') }}" class="bg-white p-6">
             @csrf
 
             <h2 class="text-2xl font-bold text-center mb-4">{{ __('Register') }}</h2>
@@ -46,6 +45,7 @@
                     <option value="">Pilih...</option>
                     <option value="A">ADMIN</option>
                     <option value="U">TAMU</option>
+                    <option value="B">BOS</option>
                 </select>
             </div>
 
@@ -59,5 +59,4 @@
                 </x-primary-button>
             </div>
         </form>
-    </div>
 </x-guest-layout>

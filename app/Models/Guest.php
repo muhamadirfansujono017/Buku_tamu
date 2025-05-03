@@ -4,8 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Message;  
-use App\Models\Reply;    
+use App\Models\Message;      
 
 class Guest extends Model
 {
@@ -17,6 +16,11 @@ class Guest extends Model
     protected $fillable = [
         'nama',
         'email',
+        'telepon',
+        'alamat',
+        'tujuan',
+        'pesan',
+        'tanggal',
     ];
 
     public function messages()

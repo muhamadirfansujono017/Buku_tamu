@@ -8,88 +8,109 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-4 items-ce">
-                    <div>DATA GUESTS</div>
+                <div class="p-4">
+                    <h3 class="text-lg font-bold text-gray-700 dark:text-white">DATA GUESTS</h3>
                 </div>
-                <div class="p-6 text-gray-900 dark:text-gray-100 flex gap-5">
+
+                <div class="p-6 text-gray-900 dark:text-gray-100 flex flex-col lg:flex-row gap-6">
+                    
                     {{-- FORM ADD --}}
-                    <div class="w-full bg-gray-100 p-4 rounded-xl">
-                        <div class="mb-5">
-                            INPUT DATA GUESTS
-                        </div>
+                    <div class="w-full lg:w-1/2 bg-gray-100 p-6 rounded-xl shadow">
+                        <h4 class="text-md font-semibold mb-4 text-gray-800">Input Data Guests</h4>
                         <form action="{{ route('guests.store') }}" method="post">
                             @csrf
-                            <div class="mb-5">
-                                <label for="base-input"
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama</label>
-                                <input name="nama" type="text" id="base-input"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                    placeholder="Masukan Nama disini...">
+
+                            <div class="mb-4">
+                                <label class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">Nama</label>
+                                <input name="nama" type="text" class="input-field" placeholder="Masukan Nama disini...">
                             </div>
-                            <div class="mb-5">
-                                <label for="base-input"
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
-                                <input name="email" type="text" id="base-input"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                    placeholder="Masukan Email disini...">
+
+                            <div class="mb-4">
+                                <label class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">Email</label>
+                                <input name="email" type="text" class="input-field" placeholder="Masukan Email disini...">
                             </div>
-                            <button type="submit"
-                                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">SIMPAN</button>
+
+                            <div class="mb-4">
+                                <label class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">Telepon</label>
+                                <input name="telepon" type="text" class="input-field" placeholder="Masukan Telepon disini...">
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">Alamat</label>
+                                <input name="alamat" type="text" class="input-field" placeholder="Masukan Alamat disini...">
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">Tujuan</label>
+                                <input name="tujuan" type="text" class="input-field" placeholder="Masukan Tujuan disini...">
+                            </div>
+
+                            <div class="mb-5">
+                                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">PESAN</label>
+                                <select class="js-example-placeholder-single js-states form-control w-full m-6" name="pesan" data-placeholder="Pilih message">
+
+                                    <option value="">Pilih...</option>
+                                    <option value="pasilitasnya yang di berika sagatlah baik dan para pegawai sangat ramah dan sopan kepada tamu">
+                                        pasilitasnya yang di berika sagatlah baik dan para pegawai sangat ramah dan sopan kepada tamu
+                                    </option>
+                                    <option value="good job untuk pasilitas yang sudah di berikan">
+                                        good job untuk pasilitas yang sudah di berikan
+                                    </option>
+                                    <option value="penilayan saya sanagt kurang utuk pasilitas yang sudah di berikan">
+                                        penilayan saya sanagt kurang utuk pasilitas yang sudah di berikan
+                                    </option>
+                                    <option value="pegawai tidak ramah dan tidak kompeten">
+                                        pegawai tidak ramah dan tidak kompeten
+                                    </option>
+                                </select>
+                            </div>
+
+                            <div class="mb-6">
+                                <label class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">Tanggal</label>
+                                <input name="tanggal" type="date" class="input-field">
+                            </div>
+
+                            <button type="submit" class="btn-primary w-full">SIMPAN</button>
                         </form>
                     </div>
-                    {{-- TABLE KONSINYASI PRODUK --}}
-                    <div class="w-full">
-                        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-                            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                                <thead
-                                    class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                                    <tr>
-                                        <th scope="col" class="px-6 py-3">
-                                            NO
-                                        </th>
-                                        <th scope="col" class="px-6 py-3">
-                                            NAMA
-                                        </th>
-                                        <th scope="col" class="px-6 py-3">
-                                            EMAIL
-                                        </th>
 
-                                        <th scope="col" class="px-6 py-3">
-                                            Visit Date
-                                        </th>
-                                        <th scope="col" class="px-6 py-3">
-                                            message
-                                        </th>
+                    {{-- TABLE DATA GUESTS --}}
+                    <div class="w-full lg:w-1/2">
+                        <div class="overflow-x-auto shadow-md sm:rounded-lg">
+                            <table class="table-auto w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                                <thead class="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
+                                    <tr>
+                                        <th class="px-4 py-2">NO</th>
+                                        <th class="px-4 py-2">NAMA</th>
+                                        <th class="px-4 py-2">EMAIL</th>
+                                        <th class="px-4 py-2">TELEPON</th>
+                                        <th class="px-4 py-2">ALAMAT</th>
+                                        <th class="px-4 py-2">TUJUAN</th>
+                                        <th class="px-4 py-2">PESAN</th>
+                                        <th class="px-4 py-2">TANGGAL</th>
+                                        <th class="px-4 py-2">AKSI</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @php
-                                        $no = 1;
-                                    @endphp
                                     @foreach ($guests as $key => $k)
-                                        <tr
-                                            class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                            <th scope="row"
-                                                class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                                {{ $guests->perPage() * ($guests->currentPage() - 1) + $key + 1 }}
-                                            </th>
-                                            <td class="px-6 py-4">
-                                                {{ $k->nama }}
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                {{ $k->email }}
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                <button type="button" data-id="{{ $k->id }}"
-                                                    data-modal-target="sourceModal"
-                                                    data-nama="{{ $k->nama }}"
-                                                    data-email="{{ $k->email }}"onclick="editSourceModal(this)"
-                                                    class="bg-amber-500 hover:bg-amber-600 px-3 py-1 rounded-md text-xs text-white">
+                                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600">
+                                            <td class="px-4 py-2">{{ $guests->perPage() * ($guests->currentPage() - 1) + $key + 1 }}</td>
+                                            <td class="px-4 py-2">{{ $k->nama }}</td>
+                                            <td class="px-4 py-2">{{ $k->email }}</td>
+                                            <td class="px-4 py-2">{{ $k->telepon }}</td>
+                                            <td class="px-4 py-2">{{ $k->alamat }}</td>
+                                            <td class="px-4 py-2">{{ $k->tujuan }}</td>
+                                            <td class="px-4 py-2">{{ $k->pesan }}</td>
+                                            <td class="px-4 py-2">{{ $k->tanggal }}</td>
+                                            <td class="px-4 py-2 space-x-2">
+                                                <button onclick="editSourceModal(this)"
+                                                        class="bg-amber-500 hover:bg-amber-600 px-3 py-1 rounded-md text-xs text-white">
                                                     Edit
                                                 </button>
-                                                <button
-                                                    onclick="return guestsDelete('{{ $k->id }}','{{ $k->nama }}')"
-                                                    class="bg-red-500 hover:bg-bg-red-300 px-3 py-1 rounded-md text-xs text-white">Delete</button>
+                                                <button onclick="return guestsDelete('{{ $k->id }}','{{ $k->nama }}')"
+                                                        class="bg-red-500 hover:bg-bg-red-300 px-3 py-1 rounded-md text-xs text-white">
+                                                    Delete
+                                                </button>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -100,51 +121,13 @@
                             {{ $guests->links() }}
                         </div>
                     </div>
+
                 </div>
-            </div>
-        </div>
-    </div>
-    <div class="fixed inset-0 flex items-center justify-center z-50 hidden" id="sourceModal">
-        <div class="fixed inset-0 bg-black opacity-50"></div>
-        <div class="fixed inset-0 flex items-center justify-center">
-            <div class="w-full md:w-1/2 relative bg-white rounded-lg shadow mx-5">
-                <div class="flex items-start justify-between p-4 border-b rounded-t">
-                    <h3 class="text-xl font-semibold text-gray-900" id="title_source">
-                        Update Sumber Database
-                    </h3>
-                    <button type="button" onclick="sourceModalClose(this)" data-modal-target="sourceModal"
-                        class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center"
-                        data-modal-hide="defaultModal">
-                        <i class="fa-solid fa-xmark"></i>
-                    </button>
-                </div>
-                <form method="POST" id="formSourceModal">
-                    @csrf
-                    <div class="flex flex-col  p-4 space-y-6">
-                        <div class="">
-                            <label for="text" class="block mb-2 text-sm font-medium text-gray-900">Nama</label>
-                            <input type="text" id="nama" name="nama"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                placeholder="Masukan Nama disini...">
-                        </div>
-                        <div class="">
-                            <label for="text" class="block mb-2 text-sm font-medium text-gray-900">Email</label>
-                            <input type="text" id="email" name="email"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                placeholder="Masukan Email disini...">
-                        </div>
-                    </div>
-                    <div class="flex items-center p-4 space-x-2 border-t border-gray-200 rounded-b">
-                        <button type="submit" id="formSourceButton"
-                            class="bg-green-400 m-2 w-40 h-10 rounded-xl hover:bg-green-500">Simpan</button>
-                        <button type="button" data-modal-target="sourceModal" onclick="sourceModalClose(this)"
-                            class="bg-red-500 m-2 w-40 h-10 rounded-xl text-white hover:shadow-lg hover:bg-red-600">Batal</button>
-                    </div>
-                </form>
             </div>
         </div>
     </div>
 </x-app-layout>
+
 <script>
     const editSourceModal = (button) => {
         const formModal = document.getElementById('formSourceModal');
@@ -152,6 +135,7 @@
         const id = button.dataset.id;
         const nama = button.dataset.nama;
         const email = button.dataset.email;
+
         let url = "{{ route('guests.update', ':id') }}".replace(':id', id);
 
         let status = document.getElementById(modalTarget);
@@ -159,9 +143,10 @@
 
         document.getElementById('nama').value = nama;
         document.getElementById('email').value = email;
-            
+
         document.getElementById('formSourceButton').innerText = 'Simpan';
-        document.getElementById('formSourceModal').setAttribute('action', url);
+        formModal.setAttribute('action', url);
+
         let csrfToken = document.createElement('input');
         csrfToken.setAttribute('type', 'hidden');
         csrfToken.setAttribute('value', '{{ csrf_token() }}');
@@ -186,18 +171,16 @@
         let tanya = confirm(`Apakah anda yakin untuk menghapus GUESTS ${nama} ?`);
         if (tanya) {
             await axios.post(`/guests/${id}`, {
-                    '_method': 'DELETE',
-                    '_token': $('meta[name="csrf-token"]').attr('content')
-                })
-                .then(function(response) {
-                    // Handle success
-                    location.reload();
-                })
-                .catch(function(error) {
-                    // Handle error
-                    alert('Error deleting record');
-                    console.log(error);
-                });
+                '_method': 'DELETE',
+                '_token': $('meta[name="csrf-token"]').attr('content')
+            })
+            .then(function(response) {
+                location.reload();
+            })
+            .catch(function(error) {
+                alert('Error deleting record');
+                console.log(error);
+            });
         }
     }
 </script>
