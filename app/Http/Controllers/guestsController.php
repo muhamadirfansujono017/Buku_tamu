@@ -9,20 +9,19 @@ class GuestsController extends Controller
 {
     public function index()
     {
-        $guests = Guest::paginate(5);
+        $guests = Guest::latest()->paginate(5);
         return view('page.guests.index', compact('guests'));
     }
 
     public function create()
     {
-        $guests = Guest::all();
-        return view('message.create', compact('guests'));
+        return view('page.guests.create');
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'guest_id' => 'required|exists:guests,id',
+            'nama' => 'required|string|max:255',
             'email' => 'required|email',
             'telepon' => 'required|string|max:20',
             'alamat' => 'required|string|max:255',
@@ -31,29 +30,27 @@ class GuestsController extends Controller
             'tanggal' => 'required|date',
         ]);
 
-        Guest::create([
-            'guest_id' => $request->guest_id,
-            'email' => $request->email,
-            'telepon' => $request->telepon,
-            'alamat' => $request->alamat,
-            'tujuan' => $request->tujuan,
-            'pesan' => $request->pesan,
-            'tanggal' => $request->tanggal,
-        ]);
+        try {
+            Guest::create($request->only([
+                'nama', 'email', 'telepon', 'alamat', 'tujuan', 'pesan', 'tanggal'
+            ]));
 
-        return redirect()->route('message.index')->with('success', 'Pesan berhasil ditambahkan');
+            return redirect()->route('guests.index')->with('success', 'Data guest berhasil ditambahkan.');
+        } catch (\Exception $e) {
+            return back()->withInput()->with('error', 'Terjadi kesalahan saat menambahkan data: ' . $e->getMessage());
+        }
     }
 
     public function show($id)
     {
         $guest = Guest::findOrFail($id);
-        return view('guests.show', compact('guest'));
+        return view('page.guests.show', compact('guest'));
     }
 
     public function edit($id)
     {
         $guest = Guest::findOrFail($id);
-        return view('guests.edit', compact('guest'));
+        return view('page.guests.edit', compact('guest'));
     }
 
     public function update(Request $request, $id)
@@ -68,25 +65,27 @@ class GuestsController extends Controller
             'tanggal' => 'required|date',
         ]);
 
-        $guest = Guest::findOrFail($id);
-        $guest->update([
-            'nama' => $request->nama,
-            'email' => $request->email,
-            'telepon' => $request->telepon,
-            'alamat' => $request->alamat,
-            'tujuan' => $request->tujuan,
-            'pesan' => $request->pesan,
-            'tanggal' => $request->tanggal,
-        ]);
+        try {
+            $guest = Guest::findOrFail($id);
+            $guest->update($request->only([
+                'nama', 'email', 'telepon', 'alamat', 'tujuan', 'pesan', 'tanggal'
+            ]));
 
-        return redirect()->route('guest.index')->with('message_update', 'Data guest berhasil diperbarui.');
+            return redirect()->route('guests.index')->with('success', 'Data guest berhasil diperbarui.');
+        } catch (\Exception $e) {
+            return back()->withInput()->with('error', 'Terjadi kesalahan saat memperbarui data: ' . $e->getMessage());
+        }
     }
 
     public function destroy($id)
     {
-        $guest = Guest::findOrFail($id);
-        $guest->delete();
+        try {
+            $guest = Guest::findOrFail($id);
+            $guest->delete();
 
-        return back()->with('message_delete', 'Data guest berhasil dihapus.');
+            return back()->with('success', 'Data guest berhasil dihapus.');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Terjadi kesalahan saat menghapus data: ' . $e->getMessage());
+        }
     }
 }

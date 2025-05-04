@@ -3,98 +3,60 @@
 namespace App\Http\Controllers;
 
 use App\Models\Message;
+use App\Exports\MessageExport; // Pastikan file ini bernama MessageExport.php
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class LaporanTamuController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    // Menampilkan data tamu dengan filter
     public function index(Request $request)
     {
-        // Query untuk mengambil data pesan
-        $message = Message::query();
+        // Mengambil data yang difilter tanpa pagination
+        $messages = $this->getFilteredMessages($request);
+        $messageCount = $messages->count();  // Menghitung jumlah data yang difilter
+
+        return view('laporan.index', compact('messages', 'messageCount'));
+    }
+
+    // Menampilkan halaman print (jika ingin mencetak)
+    public function print(Request $request)
+    {
+        // Mengambil data yang difilter tanpa pagination
+        $messages = $this->getFilteredMessages($request);
+        return view('laporan.print', compact('messages'));
+    }
+
+    // Mengekspor data ke dalam Excel
+    public function export(Request $request)
+    {
+        // Mendapatkan data yang difilter untuk diekspor
+        $messages = $this->getFilteredMessages($request);
+        return Excel::download(new MessageExport($messages), 'laporan_tamu.xlsx');
+    }
+
+    // Fungsi untuk mendapatkan pesan berdasarkan filter
+    private function getFilteredMessages(Request $request)
+    {
+        $query = Message::with('guest'); // Mengambil data tamu beserta pesan
 
         // Filter berdasarkan tanggal jika ada
-        if ($request->has('start_date') && $request->has('end_date')) {
-            $message = $message->whereBetween('tanggal', [
-                $request->start_date,
-                $request->end_date
-            ]);
+        if ($request->filled('start_date') && $request->filled('end_date')) {
+            $startDate = $request->start_date;
+            $endDate = $request->end_date;
+
+            if ($this->validateDate($startDate) && $this->validateDate($endDate)) {
+                $query->whereBetween('tanggal', [$startDate, $endDate]);
+            }
         }
 
-        // Ambil data pesan dengan get
-        $message = $message->get();
-
-        // Hitung jumlah pesan
-        $messageCount = $message->count();
-
-        // Kembalikan view dengan data pesan dan jumlah pesan
-        return view('laporan.index', compact('message', 'messageCount'));
+        // Mengambil seluruh data tanpa pagination
+        return $query->latest()->get();  // Mengambil semua data tanpa pagination
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    // Validasi format tanggal
+    private function validateDate($date)
     {
-        // Method ini tidak digunakan, jika Anda ingin membuat form, tambahkan di sini.
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        // Mengambil tanggal mulai dan tanggal sampai dari request
-        $dari = $request->input('dari', 'all');
-        $sampai = $request->input('sampai', 'all');
-
-        // Jika 'all', set nilai null
-        if ($dari === 'all') $dari = null;
-        if ($sampai === 'all') $sampai = null;
-
-        // Jika tidak ada filter tanggal, ambil semua data pesan
-        if ($dari === null) {
-            $data = Message::all();
-        } else {
-            // Jika ada filter tanggal, ambil pesan berdasarkan rentang tanggal
-            $data = Message::whereBetween('tanggal', [$dari, $sampai])->get();
-        }
-
-        // Kembalikan view print dengan data pesan
-        return view('laporan.print', ['data' => $data]);
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        // Method ini bisa digunakan jika Anda ingin menampilkan detail dari pesan tertentu.
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        // Method ini bisa digunakan untuk form edit data, jika perlu.
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        // Method ini bisa digunakan untuk update data pesan jika diperlukan.
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        // Method ini bisa digunakan untuk menghapus data pesan jika diperlukan.
+        return preg_match('/^\d{4}-\d{2}-\d{2}$/', $date);
     }
 }

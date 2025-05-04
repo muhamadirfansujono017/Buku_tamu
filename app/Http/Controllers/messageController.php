@@ -9,115 +9,96 @@ use Illuminate\Http\Request;
 class MessageController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Tampilkan daftar pesan.
      */
     public function index()
     {
-        $messages = Message::with('guest')->paginate(5);  // Memuat data tamu
-        $guests = Guest::all();  // Ambil semua data tamu
+        $messages = Message::with('guest')->latest()->paginate(5);
+        $guests = Guest::all();
 
-        return view('page.messages.index', [
-            'messages' => $messages,
-            'guests' => $guests
-        ]);
+        return view('page.messages.index', compact('messages', 'guests'));
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Form tambah data pesan (opsional).
      */
     public function create()
     {
-        // Tidak ada form create, hanya mengarah ke index.
-        return redirect()->route('message.index');
+        $guests = Guest::all();
+        return view('page.messages.create', compact('guests'));
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Simpan pesan baru.
      */
     public function store(Request $request)
     {
-        // Validasi inputan user
         $request->validate([
-            'guest_id' => 'required|exists:guests,id',  // Guest id yang valid
-            'pesan' => 'required|string|max:1000',  // Pesan tidak boleh kosong
-            'tanggal' => 'required|date',  // Tanggal harus ada
+            'guest_id' => 'required|exists:guests,id',
+            'email'    => 'required|email',
+            'telepon'  => 'required|string|max:20',
+            'alamat'   => 'required|string|max:255',
+            'tujuan'   => 'required|string|max:255',
+            'pesan'    => 'required|string|max:1000',
+            'tanggal'  => 'required|date',
         ]);
 
-        // Simpan data pesan baru
-        Message::create([
-            'guest_id' => $request->guest_id,  // Menyimpan id guest
-            'email' => $request->email,
-            'telepon' => $request->telepon,
-            'alamat' => $request->alamat,
-            'tujuan' => $request->tujuan,
-            'pesan' => $request->pesan,
-            'tanggal' => $request->tanggal,
-        ]);
+        Message::create($request->only([
+            'guest_id', 'email', 'telepon', 'alamat', 'tujuan', 'pesan', 'tanggal'
+        ]));
 
-        // Redirect kembali ke halaman index
-        return redirect()
-            ->route('message.index')
-            ->with('message_insert', 'Data pesan berhasil ditambahkan.');
+        return redirect()->route('message.index')->with('message_insert', 'Data pesan berhasil ditambahkan.');
     }
 
     /**
-     * Display the specified resource.
+     * Tidak digunakan.
      */
     public function show(string $id)
     {
-        // Tidak digunakan, redirect ke index.
         return redirect()->route('message.index');
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Form edit data pesan (opsional).
      */
     public function edit(string $id)
     {
-        // Tidak ada form edit, redirect ke index.
-        return redirect()->route('message.index');
+        $message = Message::findOrFail($id);
+        $guests = Guest::all();
+        return view('page.messages.edit', compact('message', 'guests'));
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update data pesan.
      */
     public function update(Request $request, string $id)
     {
-        // Validasi inputan untuk update
         $request->validate([
-            'guest_id_edit' => 'required|exists:guests,id',  // Guest id yang valid
-            'pesan' => 'required|string|max:1000',  // Pesan tidak boleh kosong
-            'tanggal' => 'required|date',  // Tanggal harus ada
+            'guest_id' => 'required|exists:guests,id',
+            'email'    => 'required|email',
+            'telepon'  => 'required|string|max:20',
+            'alamat'   => 'required|string|max:255',
+            'tujuan'   => 'required|string|max:255',
+            'pesan'    => 'required|string|max:1000',
+            'tanggal'  => 'required|date',
         ]);
 
-        // Cari pesan yang akan diupdate
         $message = Message::findOrFail($id);
-        $message->update([
-            'guest_id' => $request->guest_id_edit,  // Update id tamu
-            'email' => $request->email,
-            'telepon' => $request->telepon,
-            'alamat' => $request->alamat,
-            'tujuan' => $request->tujuan,
-            'pesan' => $request->pesan,
-            'tanggal' => $request->tanggal,
-        ]);
+        $message->update($request->only([
+            'guest_id', 'email', 'telepon', 'alamat', 'tujuan', 'pesan', 'tanggal'
+        ]));
 
-        // Redirect ke halaman index dengan pesan sukses
-        return redirect()
-            ->route('message.index')
-            ->with('message_update', 'Data pesan berhasil diperbarui.');
+        return redirect()->route('message.index')->with('message_update', 'Data pesan berhasil diperbarui.');
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Hapus data pesan.
      */
     public function destroy(string $id)
     {
-        // Cari pesan yang akan dihapus
         $message = Message::findOrFail($id);
-        $message->delete();  // Hapus pesan
+        $message->delete();
 
-        // Redirect kembali ke halaman sebelumnya dengan pesan sukses
         return back()->with('message_delete', 'Data pesan berhasil dihapus.');
     }
 }

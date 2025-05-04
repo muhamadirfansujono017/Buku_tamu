@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Laporan Tamu</title>
     <style>
         body {
@@ -36,6 +37,7 @@
         .total {
             margin-top: 20px;
             font-weight: bold;
+            text-align: right;
         }
 
         @media print {
@@ -67,9 +69,9 @@
                 <tr>
                     <td>{{ $message->guest->nama ?? 'Tamu Tidak Ditemukan' }}</td>
                     <td>{{ $message->email }}</td>
-                    <td>{{ $message->telepon }}</td>
-                    <td>{{ $message->alamat }}</td>
-                    <td>{{ $message->tujuan }}</td>
+                    <td>{{ $message->telepon ?? 'Tidak Diketahui' }}</td>
+                    <td>{{ $message->alamat ?? 'Tidak Diketahui' }}</td>
+                    <td>{{ $message->tujuan ?? 'Tidak Diketahui' }}</td>
                     <td>{{ \Carbon\Carbon::parse($message->tanggal)->format('d-m-Y') }}</td>
                     <td>{{ $message->pesan }}</td>
                 </tr>
@@ -80,7 +82,7 @@
     <p class="total">Total Pesan: {{ $data->count() }}</p>
 
     <script>
-        window.print(); // Hapus komentar jika ingin langsung print
+        window.print(); // Secara otomatis membuka print dialog saat halaman dimuat
     </script>
 
 </body>
