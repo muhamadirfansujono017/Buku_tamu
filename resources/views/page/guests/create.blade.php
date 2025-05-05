@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container mx-auto">
-    <h2 class="text-2xl font-bold mb-4">Tambah Guest</h2>
+    <h2 class="text-2xl font-bold mb-4">Tambah Guesttttttt</h2>
     <form action="{{ route('guests.store') }}" method="POST">
         @csrf
         <div class="mb-4">
