@@ -1,12 +1,13 @@
 <?php
 
 use App\Http\Controllers\ErrorController;
-use App\Http\Controllers\GuestsController;
+use App\Http\Controllers\guestsController;
+use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\LaporanTamuController; 
-use App\Http\Controllers\LogsController;
-use App\Http\Controllers\MessageController;
+use App\Http\Controllers\logsController;
+use App\Http\Controllers\messageController;
+use App\Http\Controllers\PelayananController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\ReplyController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -19,10 +20,13 @@ Route::get('/dashboard', function () {
 
 
 Route::resource('error', ErrorController::class);
-Route::resource('guests', GuestsController::class)->middleware('auth');
-Route::resource('message', MessageController::class)->middleware('auth');
-Route::resource('reply', ReplyController::class)->middleware('auth');
-Route::resource('logs', LogsController::class)->middleware('auth');
+Route::resource('guests', guestsController::class)->middleware('auth');
+Route::resource('message', messageController::class)->middleware('auth');
+Route::resource('kategori', KategoriController::class)->middleware('auth');
+Route::resource('logs', logsController::class)->middleware('auth');
+
+Route::get('/pelayanan/grafik', [PelayananController::class, 'grafikKepuasan'])->name('kategori.grafik');
+
 
 Route::get('laporan-tamu/export', [LaporanTamuController::class, 'export'])->name('laporantamu.export');
 Route::get('/laporantamu', [LaporanTamuController::class, 'index'])->name('laporantamu.index');

@@ -31,20 +31,19 @@
                                     </div>
                                 </button>
                             </x-slot>
-
                             <x-slot name="content">
                                 <x-dropdown-link :href="route('guests.index')">
-                                    {{ __('Guests') }}
+                                    {{ __('Data Tamu') }}
                                 </x-dropdown-link>
 
                                 <x-dropdown-link :href="route('message.index')">
-                                    {{ __('Messages') }}
+                                    {{ __('Kelola Tamu') }}
                                 </x-dropdown-link>
-                                <x-dropdown-link :href="route('reply.index')">
-                                    {{ __('Reply') }}
+                                <x-dropdown-link :href="route('kategori.index')">
+                                    {{ __('Kategori Tamu') }}
                                 </x-dropdown-link>
-                                <x-dropdown-link :href="route('laporantamu.index')">
-                                    {{ __('Laporan Tamu') }}
+                                 <x-dropdown-link :href="route('dashboard')">
+                                    {{ __('Kepuasan layanan') }}
                                 </x-dropdown-link>
                             </x-slot>
                         </x-dropdown>
@@ -53,6 +52,11 @@
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('logs.index')" :active="request()->routeIs('dashboard')">
                         {{ __('logs') }}
+                    </x-nav-link>
+                </div>
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('laporantamu.index')" :active="request()->routeIs('dashboard')">
+                        {{ __('Laporan Tamu') }}
                     </x-nav-link>
                 </div>
                 @endcan

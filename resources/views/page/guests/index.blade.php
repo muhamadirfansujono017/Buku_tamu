@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('GUESTS') }}
+            {{ __('DATA TAMU') }}
         </h2>
     </x-slot>
 
@@ -9,14 +9,14 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-4">
-                    <h3 class="text-lg font-bold text-gray-700 dark:text-white">DATA GUESTS</h3>
+                    <h3 class="text-lg font-bold text-gray-700 dark:text-white">DATA TAMU</h3>
                 </div>
 
                 <div class="p-6 text-gray-900 dark:text-gray-100 flex flex-col lg:flex-row gap-6">
                     
                     {{-- FORM ADD --}}
                     <div class="w-full lg:w-1/2 bg-gray-100 p-6 rounded-xl shadow">
-                        <h4 class="text-md font-semibold mb-4 text-gray-800">Input Data Guests</h4>
+                        <h4 class="text-md font-semibold mb-4 text-gray-800">Input Data Tamu</h4>
                         <form action="{{ route('guests.store') }}" method="post">
                             @csrf
 
