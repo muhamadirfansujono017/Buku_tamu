@@ -9,29 +9,35 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
-                    
+
                     <!-- Form Filter -->
                     <form action="{{ route('laporantamu.index') }}" method="GET" class="space-y-4 mb-6">
                         <div class="flex flex-wrap gap-4 items-end">
                             <div>
                                 <label for="start_date" class="block text-sm font-medium">Tanggal Mulai</label>
-                                <input type="date" name="start_date" id="start_date" class="rounded border-gray-300 dark:bg-gray-700 dark:text-white" value="{{ request('start_date') }}">
+                                <input type="date" name="start_date" id="start_date" 
+                                    class="rounded border-gray-300 dark:bg-gray-700 dark:text-white" 
+                                    value="{{ request('start_date') }}">
                             </div>
 
                             <div>
                                 <label for="end_date" class="block text-sm font-medium">Tanggal Selesai</label>
-                                <input type="date" name="end_date" id="end_date" class="rounded border-gray-300 dark:bg-gray-700 dark:text-white" value="{{ request('end_date') }}">
+                                <input type="date" name="end_date" id="end_date" 
+                                    class="rounded border-gray-300 dark:bg-gray-700 dark:text-white" 
+                                    value="{{ request('end_date') }}">
                             </div>
 
                             <div>
-                                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
+                                <button type="submit" 
+                                    class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
                                     Filter
                                 </button>
                             </div>
 
                             @if (request('start_date') || request('end_date'))
                                 <div>
-                                    <a href="{{ route('laporantamu.index') }}" class="text-red-500 hover:underline text-sm">Reset Filter</a>
+                                    <a href="{{ route('laporantamu.index') }}" 
+                                       class="text-red-500 hover:underline text-sm">Reset Filter</a>
                                 </div>
                             @endif
                         </div>
@@ -47,13 +53,15 @@
                                     Ekspor ke Excel
                                 </a>
 
-                                <button onclick="window.print()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm">
+                                <a href="{{ route('laporantamu.print', ['start_date' => request('start_date'), 'end_date' => request('end_date')]) }}" 
+                                   target="_blank"
+                                   class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded text-sm">
                                     Print Laporan
-                                </button>
+                                </a>
                             </div>
                         @endif
                     </div>
-                    
+
                     <!-- Tabel Data -->
                     @if ($messages->isEmpty())
                         <p class="text-gray-500">Tidak ada data untuk ditampilkan.</p>

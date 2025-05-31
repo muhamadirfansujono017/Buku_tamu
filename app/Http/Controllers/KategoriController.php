@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Kategori;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 class KategoriController extends Controller
@@ -12,27 +13,31 @@ class KategoriController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Kategori::query();
-
-        if ($request->filled('nama')) {
-            $query->where('nama', $request->nama);
-        }
-
-        $kategori = $query->orderBy('created_at', 'desc')->paginate(10); 
-
-        $allNama = Kategori::pluck('nama')->unique(); 
-
-        return view('page.kategori.index', compact('kategori', 'allNama'));
+        $kategori = Kategori::paginate(10);
+        return view('page.kategori.index', compact('kategori'));
     }
+    public function grafikKepuasan()
+{
+   
+    $pelayananUnik = Kategori::select('pelayanan')->distinct()->pluck('pelayanan');
 
+    $data = Kategori::select('pelayanan',DB::raw('count(*) as total'))
+        ->whereIn('pelayanan', $pelayananUnik)
+        ->groupBy('pelayanan')
+        ->orderByRaw("FIELD(pelayanan, 'Sangat Baik', 'Baik', 'Cukup', 'Kurang', 'Buruk')")
+        ->get();
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    $labels = $data->pluck('pelayanan');
+    $values = $data->pluck('total');
+
+    return view('page.kategori.grafik', compact('labels', 'values'));
+}
+
     public function create()
-    {
-        return view('page.kategori.create');
-    }
+{
+    return view('page.kategori.create');
+}
+
 
     /**
      * Store a newly created resource in storage.

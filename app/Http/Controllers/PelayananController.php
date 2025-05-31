@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Kategori;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 class PelayananController extends Controller
@@ -11,7 +13,18 @@ class PelayananController extends Controller
      */
     public function index()
     {
-        //
+         $pelayananUnik = Kategori::select('pelayanan')->distinct()->pluck('pelayanan');
+
+    $data = Kategori::select('pelayanan',DB::raw('count(*) as total'))
+        ->whereIn('pelayanan', $pelayananUnik)
+        ->groupBy('pelayanan')
+        ->orderByRaw("FIELD(pelayanan, 'Sangat Baik', 'Baik', 'Cukup', 'Kurang', 'Buruk')")
+        ->get();
+
+    $labels = $data->pluck('pelayanan');
+    $values = $data->pluck('total');
+
+    return view('page.pelayanan.grafik', compact('labels', 'values'));
     }
 
     /**

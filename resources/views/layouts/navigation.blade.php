@@ -42,7 +42,7 @@
                                 <x-dropdown-link :href="route('kategori.index')">
                                     {{ __('Kategori Tamu') }}
                                 </x-dropdown-link>
-                                 <x-dropdown-link :href="route('dashboard')">
+                                 <x-dropdown-link :href="route('pelayanan.index')">
                                     {{ __('Kepuasan layanan') }}
                                 </x-dropdown-link>
                             </x-slot>
