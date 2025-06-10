@@ -1,186 +1,229 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('DATA TAMU') }}
+        <h2 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
+            Data Tamu
         </h2>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-4">
-                    <h3 class="text-lg font-bold text-gray-700 dark:text-white">DATA TAMU</h3>
-                </div>
-
-                <div class="p-6 text-gray-900 dark:text-gray-100 flex flex-col lg:flex-row gap-6">
-                    
-                    {{-- FORM ADD --}}
-                    <div class="w-full lg:w-1/2 bg-gray-100 p-6 rounded-xl shadow">
-                        <h4 class="text-md font-semibold mb-4 text-gray-800">Input Data Tamu</h4>
-                        <form action="{{ route('guests.store') }}" method="post">
-                            @csrf
-
-                            <div class="mb-4">
-                                <label class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">Nama</label>
-                                <input name="nama" type="text" class="input-field" placeholder="Masukan Nama disini...">
-                            </div>
-
-                            <div class="mb-4">
-                                <label class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">Email</label>
-                                <input name="email" type="text" class="input-field" placeholder="Masukan Email disini...">
-                            </div>
-
-                            <div class="mb-4">
-                                <label class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">Telepon</label>
-                                <input name="telepon" type="text" class="input-field" placeholder="Masukan Telepon disini...">
-                            </div>
-
-                            <div class="mb-4">
-                                <label class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">Alamat</label>
-                                <input name="alamat" type="text" class="input-field" placeholder="Masukan Alamat disini...">
-                            </div>
-
-                            <div class="mb-4">
-                                <label class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">Tujuan</label>
-                                <input name="tujuan" type="text" class="input-field" placeholder="Masukan Tujuan disini...">
-                            </div>
-
-                            <div class="mb-5">
-                                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">PESAN</label>
-                                <select class="js-example-placeholder-single js-states form-control w-full m-6" name="pesan" data-placeholder="Pilih message">
-
-                                    <option value="">Pilih...</option>
-                                    <option value="pasilitasnya yang di berika sagatlah baik dan para pegawai sangat ramah dan sopan kepada tamu">
-                                        pasilitasnya yang di berika sagatlah baik dan para pegawai sangat ramah dan sopan kepada tamu
-                                    </option>
-                                    <option value="good job untuk pasilitas yang sudah di berikan">
-                                        good job untuk pasilitas yang sudah di berikan
-                                    </option>
-                                    <option value="penilayan saya sanagt kurang utuk pasilitas yang sudah di berikan">
-                                        penilayan saya sanagt kurang utuk pasilitas yang sudah di berikan
-                                    </option>
-                                    <option value="pegawai tidak ramah dan tidak kompeten">
-                                        pegawai tidak ramah dan tidak kompeten
-                                    </option>
-                                </select>
-                            </div>
-
-                            <div class="mb-6">
-                                <label class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">Tanggal</label>
-                                <input name="tanggal" type="date" class="input-field">
-                            </div>
-
-                            <button type="submit" class="btn-primary w-full">SIMPAN</button>
-                        </form>
-                    </div>
-
-                    {{-- TABLE DATA GUESTS --}}
-                    <div class="w-full lg:w-1/2">
-                        <div class="overflow-x-auto shadow-md sm:rounded-lg">
-                            <table class="table-auto w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                                <thead class="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
-                                    <tr>
-                                        <th class="px-4 py-2">NO</th>
-                                        <th class="px-4 py-2">NAMA</th>
-                                        <th class="px-4 py-2">EMAIL</th>
-                                        <th class="px-4 py-2">TELEPON</th>
-                                        <th class="px-4 py-2">ALAMAT</th>
-                                        <th class="px-4 py-2">TUJUAN</th>
-                                        <th class="px-4 py-2">PESAN</th>
-                                        <th class="px-4 py-2">TANGGAL</th>
-                                        <th class="px-4 py-2">AKSI</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($guests as $key => $k)
-                                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600">
-                                            <td class="px-4 py-2">{{ $guests->perPage() * ($guests->currentPage() - 1) + $key + 1 }}</td>
-                                            <td class="px-4 py-2">{{ $k->nama }}</td>
-                                            <td class="px-4 py-2">{{ $k->email }}</td>
-                                            <td class="px-4 py-2">{{ $k->telepon }}</td>
-                                            <td class="px-4 py-2">{{ $k->alamat }}</td>
-                                            <td class="px-4 py-2">{{ $k->tujuan }}</td>
-                                            <td class="px-4 py-2">{{ $k->pesan }}</td>
-                                            <td class="px-4 py-2">{{ $k->tanggal }}</td>
-                                            <td class="px-4 py-2 space-x-2">
-                                                <button onclick="editSourceModal(this)"
-                                                        class="bg-amber-500 hover:bg-amber-600 px-3 py-1 rounded-md text-xs text-white">
-                                                    Edit
-                                                </button>
-                                                <button onclick="return guestsDelete('{{ $k->id }}','{{ $k->nama }}')"
-                                                        class="bg-red-500 hover:bg-bg-red-300 px-3 py-1 rounded-md text-xs text-white">
-                                                    Delete
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="mt-4">
-                            {{ $guests->links() }}
-                        </div>
-                    </div>
-
-                </div>
+    <div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+        {{-- Notifikasi sukses --}}
+        @if(session('success'))
+            <div class="mb-6 p-4 bg-green-100 text-green-700 rounded">
+                {{ session('success') }}
             </div>
+        @endif
+
+        {{-- Tombol Tambah --}}
+        <div class="flex justify-end mb-4">
+            <button
+                onclick="openCreateModal()"
+                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded shadow">
+                + Tambah Tamu
+            </button>
+        </div>
+
+        {{-- Tabel Data --}}
+        <div class="overflow-x-auto rounded shadow">
+            <table class="min-w-full divide-y divide-gray-200 bg-white dark:bg-gray-800">
+                <thead class="bg-gray-50 dark:bg-gray-700">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">No</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nama</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Email</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Telepon</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Tujuan</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Tanggal</th>
+                        <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200">
+                    @forelse ($guests as $index => $guest)
+                    <tr class="hover:bg-gray-100 dark:hover:bg-gray-700">
+                        <td class="px-6 py-4 whitespace-nowrap">{{ $guests->firstItem() + $index }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ $guest->nama }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ $guest->email }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ $guest->telepon ?? '-' }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ $guest->tujuan ?? '-' }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ \Carbon\Carbon::parse($guest->tanggal)->format('d M Y') }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-center space-x-2">
+                            <button
+                                onclick="openEditModal(@json($guest))"
+                                class="bg-yellow-400 hover:bg-yellow-500 text-white px-3 py-1 rounded text-sm">
+                                Edit
+                            </button>
+                            <form action="{{ route('guests.destroy', $guest->id) }}" method="POST" class="inline"
+                                onsubmit="return confirm('Yakin ingin menghapus tamu ini?')">
+                                @csrf
+                                @method('DELETE')
+                                <button
+                                    type="submit"
+                                    class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-sm">
+                                    Hapus
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    @empty
+                    <tr>
+                        <td colspan="7" class="text-center py-6 text-gray-500">Data tamu kosong.</td>
+                    </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+
+        {{-- Pagination --}}
+        <div class="mt-4">
+            {{ $guests->links() }}
         </div>
     </div>
-</x-app-layout>
 
-<script>
-    const editSourceModal = (button) => {
-        const formModal = document.getElementById('formSourceModal');
-        const modalTarget = button.dataset.modalTarget;
-        const id = button.dataset.id;
-        const nama = button.dataset.nama;
-        const email = button.dataset.email;
+    {{-- Modal Tambah --}}
+    <div id="modalCreate" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-lg shadow-lg max-w-md w-full p-6">
+            <h3 class="text-lg font-semibold mb-4">Tambah Tamu</h3>
+            <form id="formCreate" action="{{ route('guests.store') }}" method="POST" novalidate>
+                @csrf
+                <div class="space-y-4">
+                    <div>
+                        <label for="nama_create" class="block font-medium">Nama <span class="text-red-600">*</span></label>
+                        <input type="text" name="nama" id="nama_create" class="input-field" required>
+                    </div>
+                    <div>
+                        <label for="email_create" class="block font-medium">Email <span class="text-red-600">*</span></label>
+                        <input type="email" name="email" id="email_create" class="input-field" required>
+                    </div>
+                    <div>
+                        <label for="telepon_create" class="block font-medium">Telepon</label>
+                        <input type="text" name="telepon" id="telepon_create" class="input-field">
+                    </div>
+                    <div>
+                        <label for="alamat_create" class="block font-medium">Alamat</label>
+                        <input type="text" name="alamat" id="alamat_create" class="input-field">
+                    </div>
+                    <div>
+                        <label for="tujuan_create" class="block font-medium">Tujuan</label>
+                        <input type="text" name="tujuan" id="tujuan_create" class="input-field">
+                    </div>
+                    <div>
+                        <label for="tanggal_create" class="block font-medium">Tanggal <span class="text-red-600">*</span></label>
+                        <input type="date" name="tanggal" id="tanggal_create" class="input-field" required>
+                    </div>
+                </div>
+                <div class="mt-6 flex justify-end gap-3">
+                    <button type="button" onclick="closeCreateModal()" class="btn-secondary px-4 py-2 rounded">Batal</button>
+                    <button type="submit" class="btn-primary px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
-        let url = "{{ route('guests.update', ':id') }}".replace(':id', id);
+    {{-- Modal Edit --}}
+    <div id="modalEdit" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-lg shadow-lg max-w-md w-full p-6">
+            <h3 class="text-lg font-semibold mb-4">Edit Tamu</h3>
+            <form id="formEdit" method="POST" novalidate>
+                @csrf
+                @method('PUT')
+                <div class="space-y-4">
+                    <div>
+                        <label for="nama_edit" class="block font-medium">Nama <span class="text-red-600">*</span></label>
+                        <input type="text" name="nama" id="nama_edit" class="input-field" required>
+                    </div>
+                    <div>
+                        <label for="email_edit" class="block font-medium">Email <span class="text-red-600">*</span></label>
+                        <input type="email" name="email" id="email_edit" class="input-field" required>
+                    </div>
+                    <div>
+                        <label for="telepon_edit" class="block font-medium">Telepon</label>
+                        <input type="text" name="telepon" id="telepon_edit" class="input-field">
+                    </div>
+                    <div>
+                        <label for="alamat_edit" class="block font-medium">Alamat</label>
+                        <input type="text" name="alamat" id="alamat_edit" class="input-field">
+                    </div>
+                    <div>
+                        <label for="tujuan_edit" class="block font-medium">Tujuan</label>
+                        <input type="text" name="tujuan" id="tujuan_edit" class="input-field">
+                    </div>
+                    <div>
+                        <label for="tanggal_edit" class="block font-medium">Tanggal <span class="text-red-600">*</span></label>
+                        <input type="date" name="tanggal" id="tanggal_edit" class="input-field" required>
+                    </div>
+                </div>
+                <div class="mt-6 flex justify-end gap-3">
+                    <button type="button" onclick="closeEditModal()" class="btn-secondary px-4 py-2 rounded">Batal</button>
+                    <button type="submit" class="btn-primary px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700">Update</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
-        let status = document.getElementById(modalTarget);
-        document.getElementById('title_source').innerText = `UPDATE GUESTS ${nama}`;
-
-        document.getElementById('nama').value = nama;
-        document.getElementById('email').value = email;
-
-        document.getElementById('formSourceButton').innerText = 'Simpan';
-        formModal.setAttribute('action', url);
-
-        let csrfToken = document.createElement('input');
-        csrfToken.setAttribute('type', 'hidden');
-        csrfToken.setAttribute('value', '{{ csrf_token() }}');
-        formModal.appendChild(csrfToken);
-
-        let methodInput = document.createElement('input');
-        methodInput.setAttribute('type', 'hidden');
-        methodInput.setAttribute('name', '_method');
-        methodInput.setAttribute('value', 'PATCH');
-        formModal.appendChild(methodInput);
-
-        status.classList.toggle('hidden');
-    }
-
-    const sourceModalClose = (button) => {
-        const modalTarget = button.dataset.modalTarget;
-        let status = document.getElementById(modalTarget);
-        status.classList.toggle('hidden');
-    }
-
-    const guestsDelete = async (id, nama) => {
-        let tanya = confirm(`Apakah anda yakin untuk menghapus GUESTS ${nama} ?`);
-        if (tanya) {
-            await axios.post(`/guests/${id}`, {
-                '_method': 'DELETE',
-                '_token': $('meta[name="csrf-token"]').attr('content')
-            })
-            .then(function(response) {
-                location.reload();
-            })
-            .catch(function(error) {
-                alert('Error deleting record');
-                console.log(error);
-            });
+    {{-- Styles tambahan --}}
+    <style>
+        .input-field {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ccc;
+            border-radius: 0.375rem;
+            outline: none;
+            transition: border-color 0.2s;
         }
-    }
-</script>
+        .input-field:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59,130,246,0.3);
+        }
+        .btn-primary {
+            transition: background-color 0.3s;
+        }
+        .btn-secondary {
+            background-color: #e5e7eb;
+            color: #374151;
+            transition: background-color 0.3s;
+        }
+        .btn-secondary:hover {
+            background-color: #d1d5db;
+        }
+    </style>
+
+    {{-- Script modal --}}
+    <script>
+        // Fungsi buka modal tambah
+        function openCreateModal() {
+            document.getElementById('modalCreate').classList.remove('hidden');
+        }
+        function closeCreateModal() {
+            document.getElementById('modalCreate').classList.add('hidden');
+            // reset form
+            document.getElementById('formCreate').reset();
+        }
+
+        // Fungsi buka modal edit dengan isi data
+        function openEditModal(guest) {
+            const formEdit = document.getElementById('formEdit');
+            formEdit.action = `/guests/${guest.id}`;
+
+            document.getElementById('nama_edit').value = guest.nama || '';
+            document.getElementById('email_edit').value = guest.email || '';
+            document.getElementById('telepon_edit').value = guest.telepon || '';
+            document.getElementById('alamat_edit').value = guest.alamat || '';
+            document.getElementById('tujuan_edit').value = guest.tujuan || '';
+
+            if(guest.tanggal) {
+                const tanggal = new Date(guest.tanggal);
+                const yyyy = tanggal.getFullYear();
+                const mm = String(tanggal.getMonth() + 1).padStart(2, '0');
+                const dd = String(tanggal.getDate()).padStart(2, '0');
+                document.getElementById('tanggal_edit').value = `${yyyy}-${mm}-${dd}`;
+            } else {
+                document.getElementById('tanggal_edit').value = '';
+            }
+
+            document.getElementById('modalEdit').classList.remove('hidden');
+        }
+        function closeEditModal() {
+            document.getElementById('modalEdit').classList.add('hidden');
+            document.getElementById('formEdit').reset();
+        }
+    </script>
+</x-app-layout>

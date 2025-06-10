@@ -20,7 +20,6 @@
                                 <th>Alamat</th>
                                 <th>Tujuan</th>
                                 <th>Tanggal</th>
-                                <th>Pesan</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -38,12 +37,10 @@
                                     <td>{{ $message->alamat }}</td>
                                     <td>{{ $message->tujuan }}</td>
                                     <td>{{ $message->tanggal }}</td>
-                                    <td>{{ $message->pesan }}</td>
                                     <td class="space-x-1">
                                         <button onclick="editSourceModal(this)"
                                             data-modal-target="sourceModal"
                                             data-id="{{ $message->id }}"
-                                            data-pesan="{{ $message->pesan }}"
                                             data-tanggal="{{ $message->tanggal }}"
                                             class="bg-yellow-400 text-black px-2 py-1 rounded hover:bg-yellow-500">
                                             Edit
@@ -75,17 +72,6 @@
         <div class="bg-white dark:bg-gray-900 rounded-lg shadow-lg p-6 w-full max-w-xl">
             <h3 class="text-lg font-bold mb-4 text-gray-800 dark:text-gray-100">Edit Data Tamu</h3>
             <form id="formSourceModal" method="POST">
-                @csrf
-                @method('PATCH')
-                <div class="grid grid-cols-1 gap-4">
-                    <input type="text" id="nama" name="nama" class="input" placeholder="Nama" required>
-                    <input type="email" id="email" name="email" class="input" placeholder="Email" required>
-                    <input type="text" id="telepon" name="telepon" class="input" placeholder="Telepon" required>
-                    <input type="text" id="alamat" name="alamat" class="input" placeholder="Alamat" required>
-                    <input type="text" id="tujuan" name="tujuan" class="input" placeholder="Tujuan" required>
-                    <textarea id="pesan" name="pesan" class="input" placeholder="Pesan" required></textarea>
-                    <input type="date" id="tanggal" name="tanggal" class="input" required>
-                </div>
                 <div class="flex items-center p-4 space-x-2 border-t border-gray-200 rounded-b">
                     <button type="submit" id="formSourceButton"
                         class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Simpan</button>
@@ -102,7 +88,6 @@
         const formModal = document.getElementById('formSourceModal');
         const modalTarget = button.dataset.modalTarget;
         const id = button.dataset.id;
-        const pesan = button.dataset.pesan;
         const tanggal = button.dataset.tanggal;
 
         const row = document.getElementById(`message-row-${id}`);
@@ -120,7 +105,6 @@
         document.getElementById('telepon').value = telepon;
         document.getElementById('alamat').value = alamat;
         document.getElementById('tujuan').value = tujuan;
-        document.getElementById('pesan').value = pesan;
         document.getElementById('tanggal').value = tanggal;
 
         document.getElementById(modalTarget).classList.remove('hidden');

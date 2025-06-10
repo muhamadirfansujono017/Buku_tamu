@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Tambah Pesan Baru') }}
+            {{ __('Tambah Baru') }}
         </h2>
     </x-slot>
 
@@ -84,15 +84,6 @@
                             <label for="tanggal">Tanggal</label>
                             <input type="date" name="tanggal" id="tanggal" value="{{ old('tanggal', \Carbon\Carbon::today()->format('Y-m-d')) }}" class="input-field" required>
                             @error('tanggal')
-                                <div class="text-red-500 text-sm">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-                        <!-- Pesan -->
-                        <div>
-                            <label for="pesan">Pesan</label>
-                            <textarea name="pesan" id="pesan" rows="4" class="input-field" required>{{ old('pesan') }}</textarea>
-                            @error('pesan')
                                 <div class="text-red-500 text-sm">{{ $message }}</div>
                             @enderror
                         </div>

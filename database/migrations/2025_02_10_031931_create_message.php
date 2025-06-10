@@ -18,7 +18,6 @@ return new class extends Migration
             $table->string('telepon');
             $table->string('alamat');
             $table->string('tujuan');
-            $table->string('pesan');
             $table->string('tanggal');
             $table->timestamps();
         });

@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container">
-    <h1>Edit Pesan</h1>
+    <h1>Edit</h1>
 
     <form action="{{ route('message.update', $message) }}" method="POST">
         @csrf
@@ -24,17 +24,7 @@
             @enderror
         </div>
 
-        <div class="mb-3">
-            <label for="content" class="form-label">Isi Pesan</label>
-            <textarea name="content" id="content" rows="3" 
-                class="form-control @error('content') is-invalid @enderror"
-                placeholder="Tulis pesan disini...">{{ old('content', $message->content) }}</textarea>
-            @error('content')
-                <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
-        </div>
-
-        <button type="submit" class="btn btn-warning">Update Pesan</button>
+        <button type="submit" class="btn btn-warning">Update</button>
         <a href="{{ route('message.index') }}" class="btn btn-secondary">Batal</a>
     </form>
 </div>

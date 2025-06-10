@@ -19,7 +19,6 @@ class Guest extends Model
         'telepon',
         'alamat',
         'tujuan',
-        'pesan',
         'tanggal',
     ];
 

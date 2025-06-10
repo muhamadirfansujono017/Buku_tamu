@@ -39,12 +39,11 @@ class MessageController extends Controller
             'telepon'  => 'required|string|max:20',
             'alamat'   => 'required|string|max:255',
             'tujuan'   => 'required|string|max:255',
-            'pesan'    => 'required|string|max:1000',
             'tanggal'  => 'required|date',
         ]);
 
         Message::create($request->only([
-            'guest_id', 'email', 'telepon', 'alamat', 'tujuan', 'pesan', 'tanggal'
+            'guest_id', 'email', 'telepon', 'alamat', 'tujuan','tanggal'
         ]));
 
         return redirect()->route('message.index')->with('message_insert', 'Data pesan berhasil ditambahkan.');
@@ -79,13 +78,12 @@ class MessageController extends Controller
             'telepon'  => 'required|string|max:20',
             'alamat'   => 'required|string|max:255',
             'tujuan'   => 'required|string|max:255',
-            'pesan'    => 'required|string|max:1000',
             'tanggal'  => 'required|date',
         ]);
 
         $message = Message::findOrFail($id);
         $message->update($request->only([
-            'guest_id', 'email', 'telepon', 'alamat', 'tujuan', 'pesan', 'tanggal'
+            'guest_id', 'email', 'telepon', 'alamat', 'tujuan','tanggal'
         ]));
 
         return redirect()->route('message.index')->with('message_update', 'Data pesan berhasil diperbarui.');

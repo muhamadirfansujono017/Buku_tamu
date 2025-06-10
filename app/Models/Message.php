@@ -18,12 +18,11 @@ class Message extends Model
         'telepon',
         'alamat',
         'tujuan',
-        'pesan',
         'tanggal',
     ];
 
     public function guest()
     {
-        return $this->belongsTo(Guest::class, 'guest_id', 'id');
+        return $this->belongsTo(Guest::class, 'guest_id');
     }
 }
