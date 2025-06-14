@@ -3,59 +3,51 @@
 namespace App\Http\Controllers;
 
 use App\Models\Message;
-use App\Exports\MessageExport; 
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\LaporanTamuExport;
 
 class LaporanTamuController extends Controller
 {
-    
     public function index(Request $request)
     {
-        
-        $messages = $this->getFilteredMessages($request);
-        $messageCount = $messages->count();  
+        $messages = Message::query();
 
-        return view('laporan.index', compact('messages', 'messageCount'));
+        if ($request->start_date) {
+            $messages->whereDate('tanggal', '>=', $request->start_date);
+        }
+
+        if ($request->end_date) {
+            $messages->whereDate('tanggal', '<=', $request->end_date);
+        }
+
+        $data = $messages->with('guest')->latest()->get();
+
+        return view('laporan.index', [
+            'messages' => $data,
+            'messageCount' => $data->count()
+        ]);
+    }
+
+    public function export(Request $request)
+    {
+        return Excel::download(new LaporanTamuExport($request->start_date, $request->end_date), 'laporan_tamu.xlsx');
     }
 
     public function print(Request $request)
     {
-       
-        $messages = $this->getFilteredMessages($request);
-        return view('laporan.print', compact('messages'));
-    }
+        $messages = Message::query();
 
-    
-    public function export(Request $request)
-    {
-    
-        $messages = $this->getFilteredMessages($request);
-        return Excel::download(new MessageExport($messages), 'laporan_tamu.xlsx');
-    }
-
-
-    private function getFilteredMessages(Request $request)
-    {
-        $query = Message::with('guest');
-
-       
-        if ($request->filled('start_date') && $request->filled('end_date')) {
-            $startDate = $request->start_date;
-            $endDate = $request->end_date;
-
-            if ($this->validateDate($startDate) && $this->validateDate($endDate)) {
-                $query->whereBetween('tanggal', [$startDate, $endDate]);
-            }
+        if ($request->start_date) {
+            $messages->whereDate('tanggal', '>=', $request->start_date);
         }
 
-       
-        return $query->latest()->get(); 
-    }
+        if ($request->end_date) {
+            $messages->whereDate('tanggal', '<=', $request->end_date);
+        }
 
+        $data = $messages->with('guest')->get();
 
-    private function validateDate($date)
-    {
-        return preg_match('/^\d{4}-\d{2}-\d{2}$/', $date);
+        return view('laporan.print', ['messages' => $data]);
     }
 }

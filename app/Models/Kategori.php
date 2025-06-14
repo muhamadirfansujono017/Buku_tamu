@@ -10,12 +10,18 @@ class Kategori extends Model
     protected $table = 'kategori';
     use HasFactory;
 
-     protected $fillable = [
-        'nama',
-        'keperluan',
-        'pelayanan',
-        'tanggal',
+    protected $fillable = [
+        'data_tujuan',
+
     ];
 
-    
+    public function guests()
+    {
+        return $this->hasMany(Guest::class, 'kategori_id');
+    }
+
+    public function messages()
+    {
+        return $this->hasMany(Message::class, 'kategori_id');
+    }
 }

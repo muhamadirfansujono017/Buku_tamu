@@ -11,18 +11,24 @@ class Message extends Model
 
 
     protected $table = 'message';
-    
+
     protected $fillable = [
         'guest_id',
         'email',
         'telepon',
         'alamat',
-        'tujuan',
+        'kategori_id',
         'tanggal',
     ];
 
     public function guest()
     {
         return $this->belongsTo(Guest::class, 'guest_id');
+    }
+
+
+     public function kategori()
+    {
+        return $this->belongsTo(Kategori::class, 'kategori_id');
     }
 }

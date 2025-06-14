@@ -2,101 +2,79 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Guest;
 use App\Models\Message;
+use App\Models\Guest;
+use App\Models\Kategori;
 use Illuminate\Http\Request;
 
 class MessageController extends Controller
 {
-    /**
-     * Tampilkan daftar pesan.
-     */
     public function index()
     {
-        $messages = Message::with('guest')->latest()->paginate(5);
-        $guests = Guest::all();
-
-        return view('page.messages.index', compact('messages', 'guests'));
+        $messages = Message::with('guest', 'kategori')->latest()->get();
+        return view('page.message.index', compact('messages'));
     }
 
-    /**
-     * Form tambah data pesan (opsional).
-     */
     public function create()
     {
         $guests = Guest::all();
-        return view('page.messages.create', compact('guests'));
+        $kategoris = Kategori::all(); // Nama variabel boleh jamak, tabel tetap 'kategori'
+        return view('page.message.create', compact('guests', 'kategoris'));
     }
 
-    /**
-     * Simpan pesan baru.
-     */
     public function store(Request $request)
     {
         $request->validate([
-            'guest_id' => 'required|exists:guests,id',
-            'email'    => 'required|email',
-            'telepon'  => 'required|string|max:20',
-            'alamat'   => 'required|string|max:255',
-            'tujuan'   => 'required|string|max:255',
-            'tanggal'  => 'required|date',
+            'guest_id'    => 'required|exists:guests,id',
+            'email'       => 'required|email',
+            'telepon'     => 'required|string',
+            'alamat'      => 'required|string',
+            'kategori_id' => 'required|exists:kategori,id', // Validasi tetap 'kategori'
+            'tanggal'     => 'required|date',
         ]);
 
-        Message::create($request->only([
-            'guest_id', 'email', 'telepon', 'alamat', 'tujuan','tanggal'
-        ]));
+        Message::create($request->all());
 
-        return redirect()->route('message.index')->with('message_insert', 'Data pesan berhasil ditambahkan.');
+        return redirect()->route('message.index')->with('success', 'Pesan berhasil ditambahkan.');
     }
 
-    /**
-     * Tidak digunakan.
-     */
-    public function show(string $id)
+    public function show($id)
     {
-        return redirect()->route('message.index');
+        $message = Message::with('guest', 'kategori')->findOrFail($id);
+        return view('page.message.show', compact('message'));
     }
 
-    /**
-     * Form edit data pesan (opsional).
-     */
-    public function edit(string $id)
+    public function edit($id)
     {
-        $message = Message::findOrFail($id);
-        $guests = Guest::all();
-        return view('page.messages.edit', compact('message', 'guests'));
+        $message   = Message::findOrFail($id);
+        $guests    = Guest::all();
+        $kategoris = Kategori::all();
+
+        return view('page.message.edit', compact('message', 'guests', 'kategoris'));
     }
 
-    /**
-     * Update data pesan.
-     */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
         $request->validate([
-            'guest_id' => 'required|exists:guests,id',
-            'email'    => 'required|email',
-            'telepon'  => 'required|string|max:20',
-            'alamat'   => 'required|string|max:255',
-            'tujuan'   => 'required|string|max:255',
-            'tanggal'  => 'required|date',
+            'guest_id'    => 'required|exists:guests,id',
+            'email'       => 'required|email',
+            'telepon'     => 'required|string',
+            'alamat'      => 'required|string',
+            'kategori_id' => 'required|exists:kategori,id',
+            'tanggal'     => 'required|date',
         ]);
 
         $message = Message::findOrFail($id);
-        $message->update($request->only([
-            'guest_id', 'email', 'telepon', 'alamat', 'tujuan','tanggal'
-        ]));
+        $message->update($request->all());
 
-        return redirect()->route('message.index')->with('message_update', 'Data pesan berhasil diperbarui.');
+        return redirect()->route('message.index')->with('success', 'Pesan berhasil diperbarui.');
     }
 
-    /**
-     * Hapus data pesan.
-     */
-    public function destroy(string $id)
+    public function destroy($id)
     {
         $message = Message::findOrFail($id);
         $message->delete();
 
-        return back()->with('message_delete', 'Data pesan berhasil dihapus.');
+        return redirect()->route('message.index')->with('success', 'Pesan berhasil dihapus.');
     }
 }

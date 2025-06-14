@@ -3,75 +3,40 @@
 namespace App\Http\Controllers;
 
 use App\Models\Kategori;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PelayananController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Tampilkan grafik kepuasan pelayanan berdasarkan kolom kategori di tabel guests.
      */
     public function index()
     {
-         $pelayananUnik = Kategori::select('pelayanan')->distinct()->pluck('pelayanan');
-
-    $data = Kategori::select('pelayanan',DB::raw('count(*) as total'))
-        ->whereIn('pelayanan', $pelayananUnik)
-        ->groupBy('pelayanan')
-        ->orderByRaw("FIELD(pelayanan, 'Sangat Baik', 'Baik', 'Cukup', 'Kurang', 'Buruk')")
+        // Ambil daftar nilai kategori unik dari tabel guests
+        $data = DB::table('guests')
+        ->select('kategori_id', DB::raw('COUNT(*) as total'))
+        ->groupBy('kategori_id')
         ->get();
 
-    $labels = $data->pluck('pelayanan');
-    $values = $data->pluck('total');
+    // Persiapkan label dan value untuk chart
+    $labels = [];
+    $values = [];
+
+    foreach ($data as $item) {
+        $kategoriName = Kategori::where('id', $item->kategori_id)->value('data_tujuan') ?? 'Tidak Diketahui';
+        $labels[] = $kategoriName;
+        $values[] = $item->total;
+    }
 
     return view('page.pelayanan.grafik', compact('labels', 'values'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
+    // Matikan semua method lainnya
+    public function create() { return abort(404); }
+    public function store(Request $request) { return abort(404); }
+    public function show(string $id) { return abort(404); }
+    public function edit(string $id) { return abort(404); }
+    public function update(Request $request, string $id) { return abort(404); }
+    public function destroy(string $id) { return abort(404); }
 }

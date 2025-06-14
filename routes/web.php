@@ -26,7 +26,8 @@ Route::resource('kategori', KategoriController::class)->middleware('auth');
 Route::resource('logs', logsController::class)->middleware('auth');
 Route::resource('pelayanan', PelayananController::class)->middleware('auth');
 
-Route::get('/pelayanan/grafik', [PelayananController::class, 'grafik'])->name('kategori.grafik');
+Route::get('/grafik-pelayanan', [PelayananController::class, 'index'])->name('pelayanan.grafik');
+
 
 Route::get('laporan-tamu/export', [LaporanTamuController::class, 'export'])->name('laporantamu.export');
 Route::get('/laporantamu', [LaporanTamuController::class, 'index'])->name('laporantamu.index');

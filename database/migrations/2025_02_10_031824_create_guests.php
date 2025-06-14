@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('email');
             $table->string('telepon');
             $table->string('alamat');
-            $table->string('tujuan');
+            $table->string('kategori_id');
             $table->string('tanggal');
             $table->timestamps();
         });

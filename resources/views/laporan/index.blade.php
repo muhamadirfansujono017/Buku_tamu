@@ -28,16 +28,14 @@
                             </div>
 
                             <div>
-                                <button type="submit" 
-                                    class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
+                                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
                                     Filter
                                 </button>
                             </div>
 
                             @if (request('start_date') || request('end_date'))
                                 <div>
-                                    <a href="{{ route('laporantamu.index') }}" 
-                                       class="text-red-500 hover:underline text-sm">Reset Filter</a>
+                                    <a href="{{ route('laporantamu.index') }}" class="text-red-500 hover:underline text-sm">Reset Filter</a>
                                 </div>
                             @endif
                         </div>
@@ -48,12 +46,12 @@
                         <h3 class="text-lg font-semibold">Jumlah Pesan: {{ $messageCount }}</h3>
                         @if ($messageCount > 0)
                             <div class="flex space-x-4 mt-2">
-                                <a href="{{ route('laporantamu.export', ['start_date' => request('start_date'), 'end_date' => request('end_date')]) }}"
+                                <a href="{{ route('laporantamu.export', request()->only('start_date', 'end_date')) }}"
                                    class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded text-sm">
                                     Ekspor ke Excel
                                 </a>
 
-                                <a href="{{ route('laporantamu.print', ['start_date' => request('start_date'), 'end_date' => request('end_date')]) }}" 
+                                <a href="{{ route('laporantamu.print', request()->only('start_date', 'end_date')) }}" 
                                    target="_blank"
                                    class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded text-sm">
                                     Print Laporan
@@ -74,21 +72,19 @@
                                         <th class="px-4 py-2 text-left text-sm font-semibold">Email</th>
                                         <th class="px-4 py-2 text-left text-sm font-semibold">Telepon</th>
                                         <th class="px-4 py-2 text-left text-sm font-semibold">Alamat</th>
-                                        <th class="px-4 py-2 text-left text-sm font-semibold">Tujuan</th>
+                                        <th class="px-4 py-2 text-left text-sm font-semibold">Kategori</th>
                                         <th class="px-4 py-2 text-left text-sm font-semibold">Tanggal</th>
-                                        <th class="px-4 py-2 text-left text-sm font-semibold">Pesan</th>
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
                                     @foreach ($messages as $message)
                                         <tr>
-                                            <td class="px-4 py-2">{{ $message->guest->nama ?? 'Tamu Tidak Ditemukan' }}</td>
+                                            <td class="px-4 py-2">{{ $message->guest->nama ?? '-' }}</td>
                                             <td class="px-4 py-2">{{ $message->email }}</td>
-                                            <td class="px-4 py-2">{{ $message->telepon ?? 'Tidak Diketahui' }}</td>
-                                            <td class="px-4 py-2">{{ $message->alamat ?? 'Tidak Diketahui' }}</td>
-                                            <td class="px-4 py-2">{{ $message->tujuan ?? 'Tidak Diketahui' }}</td>
+                                            <td class="px-4 py-2">{{ $message->telepon ?? '-' }}</td>
+                                            <td class="px-4 py-2">{{ $message->alamat ?? '-' }}</td>
+                                            <td class="px-4 py-2">{{ $message->kategori_id ?? '-' }}</td>
                                             <td class="px-4 py-2">{{ \Carbon\Carbon::parse($message->tanggal)->format('d-m-Y') }}</td>
-                                            <td class="px-4 py-2">{{ $message->pesan }}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>

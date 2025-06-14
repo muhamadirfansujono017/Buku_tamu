@@ -1,69 +1,25 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Tambah Kategori</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-100 font-sans min-h-screen flex items-center justify-center p-6">
+<x-app-layout>
+    <x-slot name="header">
+        <h2 class="text-xl font-bold leading-tight text-gray-800">Tambah Kategori</h2>
+    </x-slot>
 
-<div class="bg-white shadow-md rounded max-w-md w-full p-8">
-    <h2 class="text-2xl font-bold mb-6 text-gray-800">Tambah Kategori</h2>
+    <div class="p-6 max-w-xl mx-auto bg-white rounded shadow">
+        <form method="POST" action="{{ route('kategori.store') }}">
+            @csrf
 
-    @if ($errors->any())
-        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
-            <ul class="list-disc list-inside">
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
+            <div class="mb-4">
+                <label class="block font-medium text-sm text-gray-700">Data Tujuan</label>
+                <input type="text" name="data_tujuan" value="{{ old('data_tujuan') }}"
+                    class="w-full mt-1 border-gray-300 rounded shadow-sm">
+                @error('data_tujuan')
+                    <div class="text-sm text-red-500 mt-1">{{ $message }}</div>
+                @enderror
+            </div>
 
-    <form action="{{ route('kategori.store') }}" method="POST" class="space-y-5">
-        @csrf
-
-        <div>
-            <label for="nama" class="block mb-2 font-semibold text-gray-700">Nama</label>
-            <input type="text" id="nama" name="nama" required
-                   class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" 
-                   value="{{ old('nama') }}">
-        </div>
-
-        <div>
-            <label for="keperluan" class="block mb-2 font-semibold text-gray-700">Keperluan</label>
-            <input type="text" id="keperluan" name="keperluan" required
-                   class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" 
-                   value="{{ old('keperluan') }}">
-        </div>
-
-        <div>
-            <label for="pelayanan" class="block mb-2 font-semibold text-gray-700">Pelayanan</label>
-            <input type="text" id="pelayanan" name="pelayanan" required
-                   class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" 
-                   value="{{ old('pelayanan') }}">
-        </div>
-
-        <div>
-            <label for="tanggal" class="block mb-2 font-semibold text-gray-700">Tanggal</label>
-            <input type="date" id="tanggal" name="tanggal" required
-                   class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" 
-                   value="{{ old('tanggal') }}">
-        </div>
-
-        <div class="flex space-x-3">
-            <button type="submit" 
-                    class="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2 rounded font-semibold transition">
-                Simpan
-            </button>
-            <a href="{{ route('kategori.index') }}" 
-               class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-5 py-2 rounded font-semibold transition">
-               Batal
-            </a>
-        </div>
-    </form>
-</div>
-
-</body>
-</html>
+            <div class="flex justify-end space-x-3">
+                <a href="{{ route('kategori.index') }}" class="px-4 py-2 bg-gray-300 text-gray-800 rounded">Batal</a>
+                <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700">Simpan</button>
+            </div>
+        </form>
+    </div>
+</x-app-layout>
